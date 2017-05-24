@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QQ表情消除</title>
+</head>
+<body>
+<style>
+    *{margin:0px;padding:0px;}
+    body{background:#ccc;}
+    .content{width:950px;height:auto;margin:0 auto;}
+    .content p{font-size: 32px;font-weight:bold;text-align:center;margin-top:10px;}
+    .content .p1{font-size:24px;font-weight: normal;}
+    #btn1{margin:0 auto;padding:10px 10px;display:block;margin-bottom:10px;}
+    .score{width:150px;height:80px;background:#FFFFCC;border:1px solid black;float:left;}
+    .score p{font-size:24px;}
+    .score p span{color:red;}
+    .gamecontent{width:790px;height:453px;background:white;float:left;border:1px solid black;position:relative;}
+</style>
+<div class="content">
+<p>你的鼠标有多快</p>
+<p class="p1">游戏说明：点击“开始游戏”，随机掉下QQ表情，把鼠标划上去，千万别让它掉下去！！<br/>划掉25个算你赢；掉下5个算你输</p>
+    <button id="btn1">开始游戏</button>
+   <div class="score" id="score">
+     <p>得分:<span>0</span>分</p>
+       <p>失分:<span>0</span>分</p>
+   </div>
+    <div class="gamecontent" id="gamecontent">
+
+    </div>
+</div>
+</body>
+<script>
+    /*封装工具类*/
+    function getStyle(obj,attr)
+    {
+        return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+    }
+    /*抖动函数*/
+    function shake(obj,attr,endfn) {
+        var arr = [];
+        for (var i = 20; i > 0; i -= 2)
+        {
+            arr.push(i,-i);
+        }
+        arr.push(0);
+        clearInterval(obj.shaker);
+        var index = 0 ;
+        obj.shaker = setInterval(function(){
+            var speed = (parseInt(getStyle(obj,attr))+arr[index]);
+            obj.style[attr] = speed +"px";
+            ++index;
+            if(index==arr.length)
+            {
+                clearInterval(obj.shaker);
+                endfn&&endfn();
+            }
+
+        },10)
+    }
+    /*抖动结束*/
+    /*运动函数*/
+    function domove(obj,attr,step,target,endfn)
+    {
+       step = target>parseInt(getStyle(obj,attr))? step:-step;
+       clearInterval(obj.move);
+        obj.move = setInterval(function(){
+           var speed = parseInt(getStyle(obj,attr))+step;
+            if(speed>=target&&step>0||speed<=target&&step<0)
+            {
+                speed = target;
+            }
+            obj.style[attr] = speed+"px";
+            if(speed == target)
+            {
+                clearInterval(obj.move);
+                endfn&&endfn();
+            }
+        },100)
+    }
+    /*运动函数结束*/
+    //初始化开始
+    var GameContent = document.getElementById("gamecontent");
+    var win = 0 ;  //得分
+    var lose = 0 ;  //失分
+    function chushi(){
+        GameContent.innerHTML = "";
+        document.getElementById("score").getElementsByTagName("span")[0].innerHTML = 0 ;
+        document.getElementById("score").getElementsByTagName("span")[1].innerHTML = 0 ;
+        document.getElementById("btn1").innerHTML = "开始游戏";
+        document.getElementById("btn1").disabled = false;
+        speed = 1;
+         win = 0 ;
+         lose = 0 ;
+    }
+    //初始化结束
+    //结束开始
+    function end(){
+      if(win==25)
+      {
+          document.getElementById("score").getElementsByTagName("span")[0].innerHTML = win ;
+          window.alert("这世界最伤人的一句话送给你：你是个好人!");
+          chushi();
+      }
+      if(lose==5)
+      {
+          document.getElementById("score").getElementsByTagName("span")[1].innerHTML = lose ;
+          window.alert("生活不止有眼前的苟且还有诗和远方");
+          chushi();
+      }
+    }
+    //创建节点开始
+    var QQimg = ['images/1.png', 'images/2.png', 'images/3.png', 'images/4.png', 'images/5.png', 'images/6.png', 'images/7.png', 'images/8.png', 'images/9.png', 'images/10.png', 'images/11.png'];
+    var speed = 1.2;  //速度
+    function qqCreate(){
+        GameContent.innerHTML = '<img style = "position: absolute; top: 0; left: ' + Math.round(Math.random() * 790) + 'px" src = "' + QQimg[Math.round(Math.random() * (QQimg.length - 1))]+ ' "/>';
+    }
+    //创建节点结束
+    //结束
+    /*工具类结束*/
+    /*点击开始*/
+    document.getElementById("btn1").onclick = function(){
+        this.innerHTML= "开始游戏中";
+        this.disabled = true;
+        startGame();
+    }
+    function startGame(){
+        qqCreate();
+        speed+=0.8;
+        //没碰到
+        domove(GameContent.getElementsByTagName("img")[0],"top",speed,453,function(){
+            GameContent.innerHTML="";
+            ++lose;
+            document.getElementById("score").getElementsByTagName("span")[1].innerHTML = lose ;
+            if(lose==5)
+            {
+                var timer = setTimeout(function(){
+                    end();
+                },10)
+            }else
+            {
+                startGame();
+            }
+        })
+        //碰到了
+        GameContent.getElementsByTagName("img")[0].onmouseover = function(){
+            this.src='images/qq.png';
+            shake(this,"left",function(){
+                ++win;
+                GameContent.getElementsByTagName("img")[0].style["display"] = "none";
+                document.getElementById("score").getElementsByTagName("span")[0].innerHTML = win ;
+                if(win==25)
+                {
+                    var timer = setTimeout(function(){
+                        end();
+                    },10)
+                }else
+                {
+                    startGame();
+                }
+
+            })
+        }
+    }
+    /*点击结束*/
+</script>
+</html>

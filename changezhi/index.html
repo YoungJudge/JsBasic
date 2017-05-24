@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改输入框里面的值</title>
+</head>
+<body>
+<style>
+    *{margin:0px;padding:0px;}
+    .main{width:300px;height:90px;border:1px solid #ccc;margin:0 auto;margin-top:20px;overflow: hidden;}
+    .main_header{background:#6BA542;color:white;font-size:16px;text-indent: 15px;width:100%;height:30px;line-height:30px;}
+    .main_content{background:white;border-bottom:1px solid #ccc;width:100%;height:29px;}
+    .main_content .buttonon span{font-size:14px;line-height:30px;color:cornflowerblue;margin-left:10px;margin-right:15px;}
+    .main_content .buttonon button {border:none;background:brown;color:white;cursor:pointer;}
+    .main_content .buttonoff input[type=text]{width:150px;height:20px;line-height:20px;border:1px solid black;margin-left:10px;}
+    .main_content .buttonoff button {border:none;background:brown;color:white;cursor:pointer;}
+    .main_content .buttonoff {display:none;}
+</style>
+<div class="main">
+    <div class="main_header">分类名称</div>
+    <div class="main_content">
+        <!--点击之前-->
+        <div class="buttonon" >
+            <span>基础班修改里面的值</span>
+            <button>点击我修改</button>
+        </div>
+        <!--点击之前-->
+        <!--点击之后-->
+        <div class="buttonoff">
+            <input type="text" value="基础班修改里面的值">
+            <button>保存</button>
+            <button>取消</button>
+        </div>
+        <!--点击之后-->
+    </div>
+    <div class="main_content">
+        <!--点击之前-->
+        <div class="buttonon">
+            <span>基础班修改里面的值</span>
+            <button>点击我修改</button>
+        </div>
+        <!--点击之前-->
+        <!--点击之后-->
+        <div class="buttonoff">
+            <input type="text" value="基础班修改里面的值">
+            <button>保存</button>
+            <button>取消</button>
+        </div>
+        <!--点击之后-->
+    </div>
+</div>
+</body>
+<script>
+    var buttonOn = document.getElementsByClassName("buttonon");  //获取到所有点击前
+    var buttonoff = document.getElementsByClassName("buttonoff");  //获取到所有点击后的
+    for(var i=0;i<buttonOn.length;i++)
+    {
+        buttonOn[i].index = i ;
+
+        buttonOn[i].onclick = function(){
+            this.style["display"] = "none";
+            buttonoff[this.index].style["display"] = "block";
+        }
+        buttonoff[i].getElementsByTagName("button")[0].onclick = function(){
+             var value = this.parentNode.getElementsByTagName("input")[0].value;
+            this.parentNode.parentNode.getElementsByTagName("span")[0].innerHTML = value;
+            this.parentNode.style["display"]="none";
+            this.parentNode.parentNode.getElementsByClassName("buttonon")[0].style["display"] = "block";
+        }
+        buttonoff[i].getElementsByTagName("button")[1].onclick = function(){
+            this.parentNode.style["display"]="none";
+            this.parentNode.parentNode.getElementsByClassName("buttonon")[0].style["display"] = "block";
+        }
+    }
+
+</script>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>图片版时间</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    ul{list-style-type: none;width:1200px;height:50px;position:absolute;left:50%;top:50%;margin-left:-600px;margin-top:-25px;}
+    li{float:left;width:50px;height:50px;margin-right:5px;background:black;line-height:45px;text-align: center;font-size:40px;color:white;}
+    li img{display:block;width:100%;height:100%;}
+</style>
+<body>
+<ul id="shijian">
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li>年</li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li>月</li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li>日</li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+    <li><img src="images/0.JPG" alt=""></li>
+</ul>
+<script>
+    function shijian(id){
+        var arr = [] ;  //空数组用来存放时间。
+        function toTwo(str)
+        {
+            return str>=10?str:"0"+str;  //如果小于10就变成2位，要是大于10就变成2位
+        }
+        var timer = new Date();   //创建一个时间对象
+        var FullYear = timer.getFullYear();  //获取到时间
+        var Month = timer.getMonth()+1;  //获取到月份
+        var Riqi = timer.getDate(); //获取到日子
+        var Hours = timer.getHours();   //获取到小时
+        var Minutes = timer.getMinutes();  //获取到分钟
+        var Seconds = timer.getSeconds();   //获取到秒数
+        var str = FullYear.toString()+toTwo(Month).toString()+toTwo(Riqi).toString()+toTwo(Hours).toString()+":"+toTwo(Minutes)+":"+toTwo(Seconds);
+        //window.alert(str);
+        for(var i=0;i<str.length;i++)
+        {
+            arr.push(str[i]);
+        }
+        for(var n=0;n<arr.length;n++)
+        {
+            if(arr[n]==":")
+            {
+                arr[n] = "colon";
+            }
+          document.getElementById("shijian").getElementsByTagName("img")[n].src = "images/"+arr[n]+".JPG";
+        }
+    }
+    shijian("shijian");  //防止一上来刷新的时候出现不了
+timer = setInterval(function(){
+    shijian("shijian");
+},1000)
+
+</script>
+</body>
+</html>

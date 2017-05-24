@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>找到合适的值</title>
+</head>
+<body>
+<p id="shuju">
+    数组arr = [ '100px', 'abc'-6, [], -98765, 34, -2, 0, '300', , function(){alert(1);}, null, document, [],true, '200px'-30,'23.45元', 5, Number('abc'), function(){ alert(3); }, 'xyz'-90 ];
+</p>
+<ol>
+    <li>找到arr里所有的数字：-98765, 34, -2, 0, 5</li>
+    <li>找到可以转成数字的项并输出出来： </li>
+    <li>把 NaN 所在的位置找出来：'abc'-6, function(){alert(1);}, document, '200px'-30, Number('abc'), function(){ alert(3); }, 'xyz'-90 ,</li>
+
+</ol>
+<input type="button" value="找到arr里所有的数字">
+<input type="button" value="找到可以转成数字的">
+<input type="button" value="找到可以转化成数字最大的项">
+<input type="button" value="把 NaN 所在的项找出来(能找出来你但是输出不了，因为'abc'-6没办法输出,她会优先计算)">
+<input type="button" value="找到arr里面的数字和[]{}true,,null找出来">
+<p id="result"></p>
+</body>
+<script>
+    var arr = [ '100px', 'abc'-6, [], -98765, 34, -2, 0, '300', , function(){alert(1);}, null, document, [],true, '200px'-30,'23.45元', 5, Number('abc'), function(){ alert(3); }, 'xyz'-90 ];
+
+    //找到arr里面所有的数字
+    document.getElementsByTagName("input")[0].onclick = function(){
+        var result = arr.slice(0) ;
+        for(var i=0;i<arr.length;i++)
+        {
+          if(typeof (result[i])=="number")
+          {
+            if(!isNaN(parseInt(result[i])))
+            {
+               document.getElementById("result").innerHTML +=result[i]+",";
+            }
+          }
+        }
+    }
+   //找到可以转成数字的项目并输出出来
+    document.getElementsByTagName("input")[1].onclick = function(){
+       var result = arr.slice(0);            //切割字符串
+       for(var i=0;i<arr.length;i++)
+       {
+           if(parseInt(result[i])||Number(result[i])||Number(result[i])==0)
+           {
+               document.getElementById("result").innerHTML += JSON.stringify(result[i])+",";
+           }
+       }
+    }
+   //找到可以转化成数字最大的项目
+    document.getElementsByTagName("input")[2].onclick = function(){
+        var result = arr.slice(0);
+        var result2 =[];
+        for(var i=0;i<arr.length;i++)
+        {
+            if(parseInt(result[i])||Number(result[i])||Number(result[i])==0)
+            {
+                result2.push(result[i]);
+            }
+        }
+        for(var m=0;m<result2.length;m++)
+        {
+            if(parseInt(result2[0])<parseInt(result2[m]))
+            {
+               result2[0] =  result2[m];
+                document.getElementById("result").innerHTML = result2[0];
+            }
+        }
+    }
+  //找到所有NaN的项目
+
+    document.getElementsByTagName("input")[3].onclick = function(){
+        var result = arr.slice(0);  //切割字符串
+        //window.alert(result);
+        var result2 = [] ;  //空数组用来存放获取的序号
+        for(var i=0;i<result.length;i++)
+        {
+            if(isNaN(result[i]))
+            {
+                result2.push(i);
+            }
+        }
+        document.getElementById("result").innerHTML = result2;
+    }
+  //找到数组里面的数字或[]{}或者true
+    document.getElementsByTagName("input")[4].onclick = function(){
+        var result = arr.slice(0);    //切割字符串
+        var result2 = [] ;
+        for(var i=0;i<result.length;i++)
+        {
+            if(Number(result[i])||Number(result[i])==0||Number(result[i]))
+            {
+                result2.push(JSON.stringify(result[i]));
+            }
+        }
+        document.getElementById("result").innerHTML = result2;
+    }
+</script>
+</html>

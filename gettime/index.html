@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>简易版本时间计时器</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    #timer{width:1000px;height:80px;font-size:28px;line-height:80px;text-align:center;border:1px solid #ccc;position:absolute;top:50%;left:50%;margin-left:-500px;margin-top:-40px;}
+
+</style>
+<body>
+<div id="timer"></div>
+</body>
+<script>
+    function shijian(){
+        var shijian = new Date() ;  //获取到对象
+        var Year = shijian.getFullYear();  //获取到年
+        var Month = shijian.getMonth()+1;   //月份必须要加1
+        var Rizi = shijian.getDate();  //获取到日期
+        var Hour = shijian.getHours() ;  //获取到小时
+        var Minutes = shijian.getMinutes();  //获取到分钟
+        var Seconds = shijian.getSeconds() ; //获取到秒数
+        /*这个方法是要是一位前面就加0 要是2位就不加*/
+        function toTwo(str){
+            return str>10?str:"0"+str;
+        }
+        var string = "现在是"+Year+"年"+Month+"月"+Rizi+"日"+toTwo(Hour)+"点"+":"+toTwo(Minutes)+"分"+":"+toTwo(Seconds)+"秒";
+        return string;
+    }
+
+    document.getElementById("timer").innerHTML = shijian();
+
+    var timer = setInterval(function(){
+
+        document.getElementById("timer").innerHTML = shijian();
+    },1000)
+</script>
+</html>

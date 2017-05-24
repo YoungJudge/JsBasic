@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QQ号码测试</title>
+</head>
+<body>
+
+请输入QQ号码：<input id="shuzhi" type="text" />
+<input type="button" value="判断" id="button1"/>
+
+
+<br />
+1、有没有输入<br />
+2、输入的是不是数字<br />
+3、不能有0在前面<br />
+4、不能是小数<br />
+5、输入的数字必须在5位以上、10位以内<br />
+
+</body>
+<script>
+    document.getElementById("button1").onclick = function(){
+        var Text = document.getElementById("shuzhi").value;  //获取到输入框里面的数据
+        //获取到数据以后第一步先去掉空格
+        var TextEnd = Text.trim();  //去掉空格
+        if(!TextEnd)
+        {
+            window.alert("输入内容不能为空");
+            return
+        }else if(isNaN(Number(TextEnd)))
+        {
+          window.alert("只能是数字");
+            return
+        }
+        else if(TextEnd.indexOf(0)=="0")
+        {
+            window.alert("第一位不能是0");
+            return
+        }  else if(TextEnd.indexOf(".")!=-1)
+        {
+            window.alert("不能是小数");
+            return
+        }
+        else if(TextEnd.length<5||TextEnd.length>10)
+        {
+            window.alert("输入的数字必须在5位以上，10位以下");
+            return
+        }
+    }
+
+</script>
+</html>

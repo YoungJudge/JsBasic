@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百度文库评分系统</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    ul{list-style-type:none;}
+    .main{width:600px;height:100px;border:1px solid #ccc;margin:0 auto;color:cornflowerblue;margin-bottom:20px;}
+    .main .header{display: inline-block;font-size:24px;height:50px;margin-top:25px;line-height:50px;float:left;}
+    .content{overflow: hidden;float:left;margin-right:5px;}
+    .content>li{float:left;width:50px;height:50px;margin-top:25px;line-height:50px;font-size:40px;text-align:center;margin-left:25px;cursor:pointer;}
+    .content>li>label{display: none;}
+    .textcontent{font-size:16px;float:left;width:112px;height:50px;margin-top:25px;line-height:50px;}
+</style>
+<body>
+<div class="main">
+    <span class="header">总体评价:</span>
+    <ul class="content">
+        <li><span>☆</span><label>★</label></li>
+        <li><span>☆</span><label>★</label></li>
+        <li><span>☆</span><label>★</label></li>
+        <li><span>☆</span><label>★</label></li>
+        <li><span>☆</span><label>★</label></li>
+    </ul>
+    <div class="textcontent">点星星就能打分</div>
+</div>
+<!--第二次-->
+<div class="main">
+    <span class="header">总体评价:</span>
+    <ul class="content">
+        <li><span>☆</span><label>★</label></li>
+        <li><span>☆</span><label>★</label></li>
+        <li><span>☆</span><label>★</label></li>
+        <li><span>☆</span><label>★</label></li>
+        <li><span>☆</span><label>★</label></li>
+    </ul>
+    <div class="textcontent">点星星就能打分</div>
+</div>
+<!--第二次结束-->
+</body>
+<script>
+    var textcontent = ["太差了","凑乎吧","一般般","十分好","非常棒"];   //设定5个星星对应的文字
+     function star(obj,objtext)
+     {
+         obj.flag = false ;  //开关
+          for(var i=0;i<obj.getElementsByTagName("li").length;i++)
+          {
+              obj.getElementsByTagName("li")[i].index = i ;      //首先赋值
+              obj.getElementsByTagName("li")[i].onmouseover = function(){
+                    obj.clickNum = false;  //关闭
+                  for(var i=0;i<obj.getElementsByTagName("li").length;i++) {
+                      obj.getElementsByTagName("li")[i].getElementsByTagName("span")[0].style["display"] = "block";
+                      obj.getElementsByTagName("li")[i].getElementsByTagName("label")[0].style["display"] = "none";
+                  }
+                  for(var m=0;m<=this.index;m++)
+                  {
+                      obj.getElementsByTagName("li")[m].getElementsByTagName("span")[0].style["display"] = "none";
+                      obj.getElementsByTagName("li")[m].getElementsByTagName("label")[0].style["display"] = "block";
+                  }
+                  objtext.innerHTML = textcontent[this.index];
+              }
+              //鼠标移开
+              obj.getElementsByTagName("li")[i].onmouseleave = function () {
+                  if(!obj.clickNum)
+                  {
+                      for(var i=0;i<obj.getElementsByTagName("li").length;i++)
+                      {
+                          obj.getElementsByTagName("li")[i].getElementsByTagName("label")[0].style["display"] = "none";
+                          obj.getElementsByTagName("li")[i].getElementsByTagName("span")[0].style["display"] = "block";
+                      }
+                      objtext.innerHTML = "点星星就能打分";
+                  }
+              }
+              //鼠标点击
+              obj.getElementsByTagName("li")[i].onclick = function(){
+                  obj.clickNum = false;  //首先清空
+                  for(var i=0;i<=this.index;i++)
+                  {
+                      obj.getElementsByTagName("li")[i].getElementsByTagName("span")[0].style["display"] = "none";
+                      obj.getElementsByTagName("li")[i].getElementsByTagName("label")[0].style["display"] = "block";
+                  }
+                  objtext.innerHTML = textcontent[this.index];
+                  obj.clickNum = true;     //打开
+              }
+
+          }
+     }
+     for(var i=0;i<document.getElementsByClassName("content").length;i++)
+     {
+         star(document.getElementsByClassName("content")[i],document.getElementsByClassName("textcontent")[i]);
+     }
+</script>
+</html>

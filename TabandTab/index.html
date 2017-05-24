@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选项卡里套着选项卡 </title>
+</head>
+<body>
+<style>
+    *{margin:0px;padding:0px;}
+    ul{list-style-type: none;}
+    .main{width:1000px;height:300px;border:1px solid #ccc;position:absolute;left:50%;top:50%;margin-left:-500px;margin-top:-200px;}
+    .main .main_nav{width:200px;height:300px;float:left;}
+    .main .main_nav div{width: 200px;height:99px;background:#94BDD6;float:left;border-bottom: 1px solid white;text-align:center;line-height:99px;cursor:pointer;}
+    .main .main_nav div.active{background:brown;color:white;}
+    .main .content{width:800px;height:300px;float:left;position:relative;}
+    .main .content div{width:100%;height:100%;position:absolute;left:0px;top:0px;display: none;}
+    .main .content div.on{display:block;}
+    .main .content div .content_nav{width:100%;height:50px;position:absolute;bottom:0px;left:0px;background:red;}
+    .main .content div .content_nav li{cursor:pointer;width:33.2%;height:50px;float:left;border-right:1px solid white;text-align:center;line-height:50px;color:white;}
+    .main .content div .content_content{width:100%;height:250px;line-height:250px;position:absolute;left:0px;top:0px;}
+    .main .content div .content_content li {width:100%;height:250px;position:absolute;left:0px;top:0px;text-align:center;display:none;}
+    .main .content div .content_nav li.active{background:brown;color:white;}
+    .main .content div .content_content li.on{display:block;}
+</style>
+<div class="main" id="main">
+    <!--最外面的导航-->
+    <div class="main_nav">
+        <div class="active">1</div>
+        <div>2</div>
+        <div>3</div>
+    </div>
+    <!--最外面的导航结束-->
+    <!--内容开始-->
+    <div class="content">
+        <div class="on">
+            <!--内容导航开始-->
+            <ul class="content_nav">
+                <li class="active">1里面的分支1</li>
+                <li>1里面的分支2</li>
+                <li>1里面的分支3</li>
+            </ul>
+            <!--内容导航结束-->
+            <!--内容开始分类-->
+            <ul class="content_content">
+                <li class="on">1里面的分支1的内容</li>
+                <li>1里面的分支2的内容</li>
+                <li>1里面的分支3的内容</li>
+            </ul>
+
+            <!--内容开始分类结束-->
+        </div>
+        <div>
+
+            <!--内容导航开始-->
+            <ul class="content_nav">
+                <li class="active">2里面的分支1</li>
+                <li>2里面的分支2</li>
+                <li>2里面的分支3</li>
+            </ul>
+            <!--内容导航结束-->
+            <!--内容开始分类-->
+            <ul class="content_content">
+                <li class="on">2里面的分支1的内容</li>
+                <li>2里面的分支2的内容</li>
+                <li>2里面的分支3的内容</li>
+            </ul>
+
+            <!--内容开始分类结束-->
+
+
+        </div>
+        <div>
+
+            <!--内容导航开始-->
+            <ul class="content_nav">
+                <li class="active">3里面的分支1</li>
+                <li>3里面的分支2</li>
+                <li>3里面的分支3</li>
+            </ul>
+            <!--内容导航结束-->
+            <!--内容开始分类-->
+            <ul class="content_content">
+                <li class="on">3里面的分支1的内容</li>
+                <li>3里面的分支2的内容</li>
+                <li>3里面的分支3的内容</li>
+            </ul>
+
+            <!--内容开始分类结束-->
+
+        </div>
+    </div>
+    <!--内容结束-->
+</div>
+</body>
+<script>
+    tabChange()
+    function tabChange(){
+      var Nav = document.getElementsByClassName("main_nav")[0].getElementsByTagName("div");
+      var Content =  document.getElementsByClassName("content")[0].getElementsByTagName("div");
+        for(var i=0;i<Nav.length;i++)
+        {
+            Nav[i].index = i ;         //赋值序号
+            tabclick(Nav[i]);      //执行点击方法
+            ContentClick(Content[i]);   //执行内容
+        }
+       //最外面的序号
+        function tabclick(obj) {
+        obj.onmouseover = function(){
+            for(var m=0;m<Content.length;m++)
+            {
+                Content[m].style["display"] = "none";
+                Nav[m].className = "";
+            }
+            this.className = "active";
+            Content[this.index].style["display"] = "block";
+        }
+        }
+        //最外面结束
+        //最里面的
+        function ContentClick(obj)
+        {
+                for(var m=0;m<Content.length;m++)
+                {
+                    obj.getElementsByClassName("content_nav")[0].getElementsByTagName("li")[m].index = m ;
+                    obj.getElementsByClassName("content_nav")[0].getElementsByTagName("li")[m].onmouseover = function(){
+                        for(var i=0;i<obj.getElementsByClassName("content_content")[0].getElementsByTagName("li").length;i++)
+                        {
+                            obj.getElementsByClassName("content_content")[0].getElementsByTagName("li")[i].style["display"] = "none";
+                            obj.getElementsByClassName("content_nav")[0].getElementsByTagName("li")[i].className = "";
+                        }
+                        this.className = "active";
+                        obj.getElementsByClassName("content_content")[0].getElementsByTagName("li")[this.index].style["display"] = "block";
+                }
+            }
+        }
+        //最里面的结束
+    }
+</script>
+</html>

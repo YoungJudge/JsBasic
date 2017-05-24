@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS热身运动</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    .box{width:800px;height:500px;border:2px solid black;position:absolute;left:50%;top:50%;margin-top:-250px;margin-left:-500px;}
+    .header{width:100%;height:50px;background:#ccc;border-bottom:2px solid black;text-align:center;font-size:18px;line-height:50px;color:orangered;}
+    .content{overflow: hidden;}
+    .content_box{width:80%;height:450px;float:left;}
+    #btn{width:140px;height:30px;margin:0 auto;border:none;border-radius: 5px;display: block;margin-top:225px;box-shadow: 2px 2px black;}
+    #boxcontent{width:100px;height:100px;background:yellow;text-align: center;line-height:100px;}
+    #shadow{z-index:999;display:none;width: 100%;height:100%;background:black;opacity: 0.6;filter:alpha(opacity=60);position:absolute;left:0px;top:0px;}
+    .shadowbox{width:300px;height:400px;background:white;position:absolute;right:0px;top:50%;margin-top:-150px;}
+    .shadowboxheader{width:100%;height:30px;background:blue;line-height:30px;text-align: center;color:white;}
+    .cf{width:100%;height:90px;text-align:left;line-height:90px;font-size:20px;text-indent: 15px;font-weight: bold;}
+    .boxwidth{background:red;}
+    .boxheight{background:yellow;}
+    .boxcolor{background:greenyellow;}
+    .shadowbox button{font-size:20px;margin-right:5px;text-align: center;line-height:40px;padding:8px;}
+    #clear,#save{width:100px;height:50px;float:left;line-height:50px;text-align: center;background:blue;margin-top:25px;margin-left:10px;text-indent:0px;color:white;}
+
+</style>
+<body>
+ <div class="box">
+     <div class="header">点击下面的设置按钮，改变黄色盒子的大小和颜色</div>
+     <div class="content">
+         <div class="content_box">
+             <div id="boxcontent">
+
+             </div>
+         </div>
+         <div class="content_button">
+             <button id="btn">点击开始设置</button>
+         </div>
+     </div>
+ </div>
+<!--遮罩层开始-->
+<div id="shadow">
+  <div class="shadowbox">
+      <div class="shadowboxheader">改变从我开始</div>
+      <div class=" cf boxwidth" id="widthId">
+       宽度:
+          <button value="200px" shuxing="width">200</button>
+          <button value="400px" shuxing="width">400</button>
+          <button value="600px" shuxing="width">600</button>
+      </div>
+      <div class="cf boxheight" id="heightId">
+          高度:
+          <button value="200px" shuxing="height">150</button>
+          <button value="400px" shuxing="height">200</button>
+          <button value="600px" shuxing="height">300</button>
+      </div>
+      <div class="cf boxcolor" id="bgcolorId">
+          颜色:
+          <button value="blue" shuxing="background">蓝色</button>
+          <button value="red"  shuxing="background">红色</button>
+          <button value="green" shuxing="background">绿色</button>
+      </div>
+      <div class="cf" >
+          <div id="clear">恢复</div>
+          <div id="save"style="float:right;margin-top:25px;margin-right:10px;">保存</div>
+      </div>
+  </div>
+</div>
+<!--遮罩层结束-->
+ <script>
+     StartBox({"ButtonId":"btn","BoxId":"boxcontent","ShadowBoxId":"shadow","WidthId":"widthId","HeightId":"heightId","BackgroundId":"bgcolorId","SaveId":"save","ClearId":"clear"});
+     function StartBox(obj)
+     {
+         //获取数据开始
+         var ButtonId = obj.ButtonId;   //获取到点击设置的BUTTON
+         var BoxId = obj.BoxId;         //获取到变形的盒子ID
+         var ShadowBoxId = obj.ShadowBoxId;  //获取到弹出层
+         var WidthId = obj.WidthId;           //获取到宽度
+         var HeightId = obj.HeightId;         //获取到高度
+         var BackgroundId = obj.BackgroundId;   //获取到背景颜色
+         var SaveId = obj.SaveId;          //获取到保存按钮
+         var ClearId = obj.ClearId;        //获取到恢复按钮
+         //获取到数据结束
+         console.log(ButtonId+"||"+BoxId+"||"+ShadowBoxId+"||"+WidthId+"||"+HeightId+"||"+BackgroundId);
+         //点击函数开始
+         document.getElementById(ButtonId).onclick = function(){
+             document.getElementById(ShadowBoxId).style["display"] = "block";
+         }
+         //点击函数结束
+         //清除按钮开始
+         document.getElementById(ClearId).onclick = function(){
+             document.getElementById(BoxId).style["width"]="100px";
+             document.getElementById(BoxId).style["height"]="100px";
+             document.getElementById(BoxId).style["background"]="yellow";
+         }
+         //清除按钮结束
+         //保存按钮开始
+         document.getElementById(SaveId).onclick = function(){
+             document.getElementById(ShadowBoxId).style["display"] = "none";
+         }
+         //保存按钮结束
+         var length = document.getElementById(ShadowBoxId).getElementsByTagName("button").length;
+         for(var i=0;i<length;i++)
+         {
+             document.getElementById(ShadowBoxId).getElementsByTagName("button")[i].onclick=function(){
+                 var value = this.value;
+                 var shuxing = this.getAttribute("shuxing");
+                 document.getElementById(BoxId).style[shuxing] = value;
+             }
+         }
+
+     }
+
+ </script>
+</body>
+</html>

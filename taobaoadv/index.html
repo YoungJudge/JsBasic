@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>仿淘宝广告特效</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    ul{list-style-type: none;}
+    li{float:left;}
+    a{text-decoration: none;}
+    #box{width:295px;height:210px;margin:0 auto;border:1px solid #ccc;position:absolute;top:50%;left:50%;margin-left:-145px;margin-top:-105px;}
+    #left_nav li{position:absolute;left:0px;top:0px;width:50px;height:28px;line-height:28px;color:white;text-align: center;background:dodgerblue;color:white;cursor: pointer;}
+    #left_nav li.on {background:red;}
+    #center_img li{position:absolute;left:58px;top:5px;height:200px;width:180px;display:none;}
+    #center_img li.on{display: block;}
+    #center_img li img{display:block;width:100%;height:100%;}
+</style>
+<body>
+<div id="box">
+    <!--左边序列-->
+    <ul id="left_nav">
+        <li class="on">连衣裙</li>
+        <li>雪纺</li>
+        <li>T恤</li>
+        <li>铅笔裤</li>
+        <li>婚纱</li>
+        <li>外套</li>
+        <li>连体裤</li>
+        <li>包包</li>
+        <li>凉鞋</li>
+        <li>单鞋</li>
+        <li>太阳镜</li>
+        <li>丝袜</li>
+        <li>帆布鞋</li>
+        <li>情侣装</li>
+    </ul>
+    <!--左边序列结束-->
+    <!--中间的图片-->
+    <ul id="center_img">
+        <li class="on"><a href=""><img src="images/1.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/2.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/3.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/4.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/5.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/6.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/7.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/8.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/9.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/10.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/11.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/12.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/13.jpg" alt=""></a></li>
+        <li><a href=""><img src="images/14.jpg" alt=""></a></li>
+    </ul>
+    <!--图片结束-->
+</div>
+</body>
+<script>
+    taobao({"BoxId":"box","LeftId":"left_nav","ContentId":"center_img","ActiveClass":"on"})
+    //3个参数第一个是LeftId第二个内容ID 第三个是活跃的Active类名
+    function taobao(obj)
+    {
+          //接受数据开始
+        var Left = obj.LeftId;   //左边的ID
+        var Content = obj.ContentId ;   //中间的ID
+        var ActiveClass = obj.ActiveClass;  //活跃的class
+        var BoxId = obj.BoxId;  //获取到最外面的BOXId
+          //接受数据结束
+        //封装获取函数
+        function getStyle(obj,attr)
+        {
+            return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+        }
+        //封装获取函数结束
+          //初始化开始为了获取到定位
+        var length = document.getElementById(Left).getElementsByTagName("li").length;  //获取到所有的li的个数
+        for(var i=0;i<length;i++)
+        {
+            if(i<7)
+            {
+                document.getElementById(Left).getElementsByTagName("li")[i].style["top"] = (parseInt(getStyle(document.getElementById(Left).getElementsByTagName("li")[0],"height"))+2)*i+"px";
+            }else
+            {
+                document.getElementById(Left).getElementsByTagName("li")[i].style["top"] = (parseInt(getStyle(document.getElementById(Left).getElementsByTagName("li")[0],"height"))+2)*(i-7)+"px";
+                document.getElementById(Left).getElementsByTagName("li")[i].style["left"] = "245px";
+            }
+
+        }
+         //初始化结束
+        //鼠标放上去效果
+
+        for(var m = 0;m<length;m++)
+        {
+            document.getElementById(Left).getElementsByTagName("li")[m].index = m ;
+            document.getElementById(Left).getElementsByTagName("li")[m].onmouseover = move;
+            document.getElementById(Left).getElementsByTagName("li")[m].onmouseleave = function(){
+                 timer = setInterval(timermove,1000);  //定时器
+            }
+        }
+        //运动函数
+        function move()
+        {
+            //一上来都清空
+            clearInterval(timer);
+            for(var i=0;i<length;i++)
+            {
+                document.getElementById(Left).getElementsByTagName("li")[i].className = " ";  //一上来都清空
+                document.getElementById(Content).getElementsByTagName("li")[i].className = " ";  //一上来都清空
+            }
+            //清空结束
+            index = this.index;  //赋值
+            this.className = ActiveClass ;   //活跃的类
+            document.getElementById(Content).getElementsByTagName("li")[this.index].className = ActiveClass;  //赋值
+        }
+        //运动函数结束
+        //定时器函数
+        var index = 0;
+        function timermove(){
+                for(var i=0;i<length;i++)
+                {
+                    document.getElementById(Left).getElementsByTagName("li")[i].className = " ";  //一上来都清空
+                    document.getElementById(Content).getElementsByTagName("li")[i].className = " ";  //一上来都清空
+                }
+                if(index==length-1)
+                {
+                    index = -1;
+                }
+                ++index;
+                document.getElementById(Content).getElementsByTagName("li")[index].className = "on";
+                document.getElementById(Left).getElementsByTagName("li")[index].className = "on";
+        }
+        //定时器函数结束
+        var  timer = setInterval(timermove,1000);
+        document.getElementById(Content).onmouseover = function(){
+            clearInterval(timer);  //停止
+        }
+        document.getElementById(Content).onmouseleave = function(){
+            timer = setInterval(timermove,1000)
+        }
+
+    }
+</script>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片轮播无缝滚动</title>
+</head>
+<style type="text/css">
+    *{margin:0px;padding:0px;}
+    ul{list-style-type: none;}
+    li{float:left;}
+    #container{max-width:1000px;height:416px;position:relative;margin-top:30px;}  /*这里定位只能是相对定位，并且只能是超出部分隐藏*/
+    #pic_all{position:absolute;left:0px;top:0px;}
+    #pic_all li{width:1000px;height:416px;}
+    #pic_all li a img {display:block;width: 100%;height:100%;}
+    #tabbutton{position:absolute;left:50%;bottom:10px;transform:translate(-50%,-50%);width:270px;height:30px;}
+    #tabbutton li {width:30px;height:30px;margin-right:15px;background:white;border-radius: 50%;line-height:30px;text-align: center;}
+    #tabbutton li.active{background:blue;}
+    #left{width:28px;height:40px;position:absolute;left:0px;top:160px;background:url(images/left-arrow.png) no-repeat center center;}
+    #right{width:28px;height:40px;position:absolute;right:0px;top:160px;background:url(images/right-arrow.png) no-repeat center center;}
+</style>
+<body>
+<!--容器开始-->
+<div id="container">
+    <!--大图内容开始-->
+    <ul id="pic_all">
+        <li><a href=""><img src="images/1.png"></a></li>
+        <li><a href=""><img src="images/2.png"></a></li>
+        <li><a href=""><img src="images/3.png"></a></li>
+        <li><a href=""><img src="images/4.png"></a></li>
+    </ul>
+    <!--大图内容结束-->
+    <!--小图选项卡开始-->
+    <ul id="tabbutton">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ul>
+    <!--小图选项卡结束-->
+    <!--左右箭头开始-->
+    <div id="arrow">
+        <div id="left"></div>
+        <div id="right"></div>
+    </div>
+    <!--左右箭头结束-->
+</div>
+<!--容器结束-->
+</body>
+<script>
+ /*先写好工具类*/
+ function getStyle(obj,attr)
+ {
+     return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+ }
+ /*运动函数*/
+ function move(obj,attr,step,target,endfn)
+ {
+     step = target>parseFloat(getStyle(obj,attr))?step:-step;
+     clearInterval(obj.timer);
+     obj.timer = setInterval(function(){
+         var speed = parseFloat(getStyle(obj,attr))+step;
+         if(speed>=target&&step>0||speed<=target&&step<0)
+         {
+             speed = target;
+         }
+         obj.style[attr] = speed+"px";
+         if(speed == target)
+         {
+             clearInterval(obj.timer);
+             endfn&&endfn();
+         }
+     },100)
+ }
+/*运动函数*/
+ /*工具类结束*/
+ /*图片轮播开始*/
+ lunbo({"BoxId":"container","ImgAllId":"pic_all","TabAll":"tabbutton","LeftId":"left","RightId":"right"});
+ function lunbo(obj){
+     var BoxId = obj.BoxId;
+     var ImgAllId = obj.ImgAllId;
+     var TabAll = obj.TabAll;
+     var LeftId = obj.LeftId;
+     var RightId = obj.RightId;
+     //初始化开始
+     var liall = document.getElementById(ImgAllId).getElementsByTagName("li");
+     var width = parseInt(getStyle(liall[0],"width"));   //获取到宽度
+     document.getElementById(ImgAllId).style["width"] = liall.length*width+"px";  //设置好长度
+     //初始化结束
+     /*清空函数*/
+     function clearClass(){
+         for(var i=0;i<document.getElementById(TabAll).getElementsByTagName("li").length;i++)
+         {
+             document.getElementById(TabAll).getElementsByTagName("li")[i].className = "";
+         }
+     }
+
+     /*清空函数结束*/
+     var pnum = 0 ;
+     var dnum = 0 ;
+     var timer = null;
+     document.getElementById(RightId).onclick = function(){
+         clearInterval(timer);
+         clearClass();       //清空
+         pnum++;
+         dnum++;
+         if(pnum == liall.length)
+         {
+             liall[0].style["position"] = "relative";
+             liall[0].style["left"] = liall.length*width+"px";
+             pnum = 0 ;
+         }
+
+          move(document.getElementById(ImgAllId),"left",300,-dnum*width,function(){
+              if(pnum==0)
+              {
+                  liall[0].style["position"] = "static";
+                  document.getElementById(ImgAllId).style["left"] = "0px";
+
+              }
+          })
+         if(pnum==0)
+         {
+             dnum = 0 ;
+         }
+
+         document.getElementById(TabAll).getElementsByTagName("li")[dnum].className = "active";
+     }
+     document.getElementById(LeftId).onclick = function(){
+         clearInterval(timer);
+         clearClass();
+           --pnum;
+           --dnum;
+         if(pnum==-1)
+         {
+             pnum = liall.length-1;
+             dnum = liall.length-1;
+         }
+         document.getElementById(TabAll).getElementsByTagName("li")[dnum].className = "active";
+         move(document.getElementById(ImgAllId),"left",300,-dnum*width,function(){
+             if(pnum==0)
+             {
+                 liall[0].style["position"] = "static";
+                 document.getElementById(ImgAllId).style["left"] = "0px";
+
+             }
+         })
+     }
+     for(var i=0;i<liall.length;i++)
+     {
+         document.getElementById(TabAll).getElementsByTagName("li")[i].index = i ;
+         document.getElementById(TabAll).getElementsByTagName("li")[i].onclick = function(){
+             clearClass();
+             pnum = this.index;
+             dnum = this.index;
+             document.getElementById(TabAll).getElementsByTagName("li")[dnum].className = "active";
+             move(document.getElementById(ImgAllId),"left",300,-dnum*width,function(){
+                 if(pnum==0)
+                 {
+                     liall[0].style["position"] = "static";
+                     document.getElementById(ImgAllId).style["left"] = "0px";
+
+                 }
+             })
+         }
+     }
+     function autoplay(){
+         clearClass();       //清空
+         pnum++;
+         dnum++;
+         if(pnum == liall.length)
+         {
+             liall[0].style["position"] = "relative";
+             liall[0].style["left"] = liall.length*width+"px";
+             pnum = 0 ;
+         }
+
+         move(document.getElementById(ImgAllId),"left",300,-dnum*width,function(){
+             if(pnum==0)
+             {
+                 liall[0].style["position"] = "static";
+                 document.getElementById(ImgAllId).style["left"] = "0px";
+
+             }
+         })
+         if(pnum==0)
+         {
+             dnum = 0 ;
+         }
+         document.getElementById(TabAll).getElementsByTagName("li")[dnum].className = "active";
+     }
+     document.getElementById(BoxId).onmouseover = function(){
+         clearInterval(timer);
+     }
+     document.getElementById(BoxId).onmouseleave = function(){
+         timer = setInterval(autoplay,1000);
+     }
+     timer = setInterval(autoplay,1000);
+
+ }
+</script>
+</html>

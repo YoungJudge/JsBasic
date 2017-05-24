@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自动生成100个li</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    .content{width:1000px;height:auto;border:2px solid #ccc;margin:0 auto;margin-top:50px;}
+    .content_header{width:100%;height:50px;background:black;}
+    #btn{font-size:16px;margin:0 auto;display: block;line-height:23px;padding:10px;}
+    .content_1{width:100%;height:auto;}
+    .content_1 div{width:50px;height:50px;float:left;text-align: center;line-height:50px;margin-left:10px;background:black;color:white;margin-top:10px;}
+</style>
+<body>
+<div class="content">
+    <div class="content_header"><button id="btn">点击设置</button></div>
+    <div class="content_1" id="content_1">
+
+    </div>
+</div>
+</body>
+<script>
+LiStart({"BoxId":"content_1","ButtonId":"btn"})
+    function LiStart(obj)
+    {
+        var BoxId = obj.BoxId;  //获取到ID
+        var ButtonId = obj.ButtonId;  //获取到按钮ID
+        var countNum = 0 ;
+        document.getElementById(ButtonId).onclick = function(){
+             countNum++;    //计数器加
+            if(countNum%2==0)
+            {
+                document.getElementById(BoxId).innerHTML = "";
+            }else
+            {
+                for(var i=0;i<10;i++)
+                {
+                    for(var m=1;m<=10;m++)
+                    {
+                        document.getElementById(BoxId).innerHTML +='<div>'+(i*10+m)+'</div>'
+                    }
+                }
+            }
+        }
+    }
+</script>
+</html>

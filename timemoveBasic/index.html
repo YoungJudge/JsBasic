@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>倒计时</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    #timer{width:1000px;height:80px;font-size:28px;line-height:80px;text-align:center;border:1px solid #ccc;position:absolute;top:50%;left:50%;margin-left:-500px;margin-top:-40px;}
+
+</style>
+<body>
+
+<div id="timer">
+    距离2026年1月1日还剩的时间是
+</div>
+</body>
+<script>
+var NewTime = new Date("2026","1","1","12","0","0");  //先算出来2026年1月1日12点的毫秒数
+function getSevertime(){
+    var xmlHttp = new XMLHttpRequest();
+    if( !xmlHttp ){
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.open("HEAD",location.href,false);
+    xmlHttp.send();
+    var severtime=new Date(xmlHttp.getResponseHeader("Date"));
+    return severtime;
+}
+var oldtime = getSevertime();  //获取到服务器的时间
+function change(){
+    var oldTime = new Date();  //获取到老的时间
+    var chazhi = Math.floor((NewTime-oldTime)/1000);  //获取到剩余的秒数
+    var str = Math.floor(chazhi/86400)+'天'+Math.floor(chazhi%86400/3600)+'点'+Math.floor(chazhi%86400%3600/60)+'分'+chazhi%60+'秒';
+      return str;
+}
+var timer = setInterval(function(){
+    document.getElementById("timer").innerHTML = "距离2026年1月1日还剩的时间是"+change();
+},1000)
+</script>
+</html>

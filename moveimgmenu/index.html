@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片轮播配合底部导航</title>
+</head>
+<body>
+<style>
+    *{margin:0px;padding:0px;}
+    a{text-decoration: none;color:white;}
+    ul{list-style-type:none;}
+    li{float:left;}
+    .content{width:600px;height:400px;position:absolute;left:50%;top:50%;margin-left:-300px;margin-top:-200px;box-shadow: 0px 0px 20px #ccc;overflow: hidden;}
+    #imgcontent{width:auto;height:400px;position:absolute;left:0px;top:0px;}
+    #imgcontent li{width:600px;height:400px;position:static;left:0px;top:0px;}
+    #imgcontent li img{display:block;width:100%;height:100%;}
+    #imgnav{position:absolute;top:350px;left:0px;width:100%;height:50px;line-height:50px;opacity:0.6;filter:alpha(opacity=60);background:black;z-index:999;overflow: hidden;}
+    #imgnav ul{width:100%;height:auto;left:0px;top:0px;position:absolute;}
+    #imgnav ul li {width:600px;height:50px;text-align:center;}
+</style>
+<div class="content">
+    <!--导航开始-->
+    <div id="imgnav">
+    <ul>
+        <li><a href="">第一幅图文字说明</a></li>
+        <li><a href="">第二幅图文字说明</a></li>
+        <li><a href="">第三幅图文字说明</a></li>
+        <li><a href="">第四幅图文字说明</a></li>
+    </ul>
+    </div>
+    <!--导航结束-->
+    <!--内容开始-->
+
+    <ul id="imgcontent">
+        <li><img src="images/1.png" alt=""><a href=""></a></li>
+        <li><img src="images/2.png" alt=""><a href=""></a></li>
+        <li><img src="images/3.png" alt=""><a href=""></a></li>
+        <li><img src="images/4.png" alt=""><a href=""></a></li>
+    </ul>
+
+    <!--内容结束-->
+</div>
+</body>
+<script>
+    window.onload = function(){
+          //第一步封装工具函数
+           function getStyle(obj,attr){
+            return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+           }
+           function move(obj,attr,step,target,endfn)
+           {
+               step = target>parseFloat(getStyle(obj,attr))?step:-step;
+               clearInterval(obj.timer);  //防止定时器累加
+               obj.timer = setInterval(function(){
+                   var speed = parseFloat(getStyle(obj,attr))+step;
+                   if(speed>=target&&step>0||speed<=target&&step<0)
+                   {
+                       speed = target;
+                   }
+                   obj.style[attr] = speed+"px";
+                   if(speed==target)
+                   {
+                       clearInterval(obj.timer);
+                       endfn&&endfn();
+                   }
+               },100)
+           }
+          //封装结束
+          //初始化开始
+        var length =  document.getElementById("imgcontent").getElementsByTagName("li").length;
+        var width = parseFloat(getStyle(document.getElementById("imgcontent").getElementsByTagName("li")[0],"width"));
+        var height = parseFloat(getStyle(document.getElementById("imgnav").getElementsByTagName("li")[0],"height"));
+        document.getElementById("imgcontent").style["width"] = length*width+"px";
+        document.getElementById("imgnav").getElementsByTagName("ul")[0].style["height"] = length*height+"px";
+          //初始化结束
+        var index = 0 ;  //图片
+        var index2 = 0 ; //文字
+        var timer = null;
+        /*
+        图片轮播的典型思路。1个计数器 2个判断
+        设定一个计数器。合集走的距离就是计数器*单个li的宽度。
+        判断当都走到倒数第二个(也就是能显示的最后一个)的时候，第一个改变定位和位置（就是个数*宽度）。
+        第二次判断当最后能显示的走完了。然后拉回来。恢复第一个元素的定位。和合集的left 然后计数器恢复0
+         */
+        function autoplay(){
+            timer = setInterval(function(){
+                if(index==length-1)
+                {
+                    document.getElementById("imgcontent").getElementsByTagName("li")[0].style["position"] = "relative";
+                    document.getElementById("imgcontent").getElementsByTagName("li")[0].style["left"] = length*width+"px";
+                    document.getElementById("imgcontent").getElementsByTagName("li")[0].style["top"] = "0px";
+                }
+                if(index==length)
+                {
+                    document.getElementById("imgcontent").getElementsByTagName("li")[0].style["position"] = "static";
+                    document.getElementById("imgcontent").style["left"]= "0px";
+                    index = 0;
+                }
+                index++;
+                index2++;
+                move(document.getElementById("imgcontent"),"left",80,-index*width,function(){
+                    if(index2==length)
+                    {
+                        document.getElementById("imgnav").getElementsByTagName("li")[0].style["position"] = "static";
+                        document.getElementById("imgnav").getElementsByTagName("ul")[0].style["top"]= "50px";   //这里必须是50了。因为他后面要运动，相当于是从50运动到0
+                        index2 = 0;
+                    }
+                    if(index2==length-1)
+                    {
+                        document.getElementById("imgnav").getElementsByTagName("li")[0].style["position"] = "relative";
+                        document.getElementById("imgnav").getElementsByTagName("li")[0].style["top"] = length*height+"px";
+                        document.getElementById("imgnav").getElementsByTagName("li")[0].style["left"] = "0px";
+                    }
+                    move(document.getElementById("imgnav").getElementsByTagName("ul")[0],"top",10,-index2*height);
+
+
+
+                });
+            },3000)
+        }
+     autoplay();
+        document.getElementById("imgcontent").onmouseover = function(){
+            clearInterval(timer);
+        }
+        document.getElementById("imgcontent").onmouseleave= function(){
+            autoplay();
+        }
+
+    }
+</script>
+</html>

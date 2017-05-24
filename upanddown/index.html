@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>控制商品上下移动</title>
+</head>
+<body>
+<style>
+    *{margin:0px;padding:0px;}
+    ul{list-style-type:none;}
+    li{float:left;}
+    .main{width:186px;height:470px;box-shadow: 2px 2px 2px black;position:absolute;left:50%;top:50%;margin-left:-93px;margin-top:-235px;border:1px solid #ccc;}
+    .maincontent{width:170px;height:454px;border-radius: 15px;border:1px solid #ccc;margin:8px 8px;}
+    .mainheader{width:100%;background:#294A73;height:25px;line-height:25px;border-radius: 15px 15px 0px 0px; color:white;text-align:center;}
+    .topbutton{width:100%;background:#F2EFE6;height:25px;}
+    #top{width:17px;height:19px;margin:0 auto;display: block;border:none;cursor:pointer;}
+    .content_all{width:100%;height:380px;position:relative;overflow:hidden;}
+    .bottombutton{width:100%;background:#F2EFE6;height:25px;line-height:25px;border-radius: 0px 0px 15px 15px; overflow: hidden;}
+    #bottom{width:30px;height:18px;margin:3px auto;border:none;display:block;cursor:pointer;}
+    #content_ul{width:150px;position:absolute;left:10px;top:0px;height:auto;}
+    #content_ul li{width:100%;height:110px;border-bottom: 1px solid #ccc;background:white;}
+    #content_ul li .content_left{width:auto;height:100%;float:left;}
+    #content_ul li .content_left p {font-size:12px;float:left;}
+    #content_ul li .content_left .p1{margin-top:24px;line-height:20px;}
+    #content_ul li .content_left .p2{height:40px;margin-bottom:5px;line-height:20px;}
+    #content_ul li .content_right{width:auto;height:100%;float:right;}
+    #content_ul li .content_right img{display:block;margin:0 auto;}
+</style>
+<div class="main">
+    <!--内部开始-->
+    <div class="maincontent">
+        <div class="mainheader">
+            商品上下移动
+        </div>
+        <!--上按钮-->
+        <div class="topbutton">
+            <button id="top"><img src="images/top.jpg"></button>
+        </div>
+        <!--上按钮结束-->
+        <!--内容开始-->
+        <div class="content_all">
+            <ul id="content_ul">
+                <li>
+                    <!--右边开始-->
+                    <div class="content_right">
+                        <img src="images/pic1.jpg">
+                    </div>
+                    <!--右边结束-->
+                    <!--左边-->
+                    <div class="content_left">
+                        <p class="p1">翻新笔记本</p>
+                        <p class="p2">RMB5788,直降1000元</p>
+                    </div>
+                    <!--左边结束-->
+                </li>
+                <li>
+                    <!--左边-->
+                    <div class="content_left">
+                        <p class="p1">Mac指南</p>
+                        <p class="p2">RMB5788,RMB5788,直降1000元</p>
+                    </div>
+                    <!--左边结束-->
+                    <!--右边开始-->
+                    <div class="content_right">
+                        <img src="images/pic2.jpg">
+                    </div>
+                    <!--右边结束-->
+                </li>
+                <li>
+                    <!--右边开始-->
+                    <div class="content_right">
+                        <img src="images/pic1.jpg">
+                    </div>
+                    <!--右边结束-->
+                    <!--左边-->
+                    <div class="content_left">
+                        <p class="p1">翻新笔记本</p>
+                        <p class="p2">RMB5788,直降1000元</p>
+                    </div>
+                    <!--左边结束-->
+                </li>
+                <li>
+                    <!--左边-->
+                    <div class="content_left">
+                        <p class="p1">Mac指南</p>
+                        <p class="p2">RMB5788,RMB5788,直降1000元</p>
+                    </div>
+                    <!--左边结束-->
+                    <!--右边开始-->
+                    <div class="content_right">
+                        <img src="images/pic2.jpg">
+                    </div>
+                    <!--右边结束-->
+                </li>
+                <li>
+                    <!--右边开始-->
+                    <div class="content_right">
+                        <img src="images/pic1.jpg">
+                    </div>
+                    <!--右边结束-->
+                    <!--左边-->
+                    <div class="content_left">
+                        <p class="p1">翻新笔记本</p>
+                        <p class="p2">RMB5788,直降1000元</p>
+                    </div>
+                    <!--左边结束-->
+                </li>
+                <li>
+                    <!--左边-->
+                    <div class="content_left">
+                        <p class="p1">Mac指南</p>
+                        <p class="p2">RMB5788,RMB5788,直降1000元</p>
+                    </div>
+                    <!--左边结束-->
+                    <!--右边开始-->
+                    <div class="content_right">
+                        <img src="images/pic2.jpg">
+                    </div>
+                    <!--右边结束-->
+                </li>
+                <li>
+                    <!--右边开始-->
+                    <div class="content_right">
+                        <img src="images/pic1.jpg">
+                    </div>
+                    <!--右边结束-->
+                    <!--左边-->
+                    <div class="content_left">
+                        <p class="p1">翻新笔记本</p>
+                        <p class="p2">RMB5788,直降1000元</p>
+                    </div>
+                    <!--左边结束-->
+                </li>
+                <li>
+                    <!--左边-->
+                    <div class="content_left">
+                        <p class="p1">Mac指南</p>
+                        <p class="p2">RMB5788,RMB5788,直降1000元</p>
+                    </div>
+                    <!--左边结束-->
+                    <!--右边开始-->
+                    <div class="content_right">
+                        <img src="images/pic2.jpg">
+                    </div>
+                    <!--右边结束-->
+                </li>
+            </ul>
+        </div>
+
+        <!--内容结束-->
+        <!--下按钮开始-->
+        <div class="bottombutton">
+            <button id="bottom"><img src="images/bottom.jpg"></button>
+        </div>
+        <!--下按钮结束-->
+    </div>
+    <!--内部结束-->
+</div>
+</body>
+<script>
+     //window.onload 必须要有 因为他需要加载完以后在计算。要不然右边的宽度你获取不到
+    window.onload = function(){
+        moveOFF({"TopId":"top","BottomId":"bottom","ContentId":"content_ul"});
+        //调用法则上按钮就是TopId下按钮就是BottomId,内容就是ContentId
+        function moveOFF(obj){
+            //第一步接受数据开始
+            var Top = obj.TopId;   //上按钮
+            var Bottom = obj.BottomId;  //下按钮
+            var ContentId = obj.ContentId;  //获取到内容按钮
+            //console.log(Top+"||"+Bottom+"||"+ContentId);
+            //接收数据结束
+            //分割线----------------------------------------
+            //封装获取函数
+            function getStyle(obj,attr)
+            {
+                return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+            }
+            //封装函数结束  window.alert(getStyle(document.getElementById(Top),"width"));测试
+            //初始化开始确定左边的宽度
+            var liall = document.getElementById(ContentId).getElementsByTagName("li"); //获取到li的合计
+            var length = liall.length;  //获取到个数
+            for(var i=0;i<length;i++)
+            {
+                var content_li_width = parseInt(getStyle(liall[i],"width"));  //获取到li的总共宽度
+                var content_li_right = parseInt(getStyle(liall[i].getElementsByClassName("content_right")[0],"width"));  //获取到右边的宽度
+                liall[i].getElementsByClassName("content_left")[0].style["width"] = (content_li_width-content_li_right)+"px";//剩下的就是左边，并且赋值
+                //console.log(content_li_right);测试一下
+            }
+            //初始化结束
+            //封装运动函数
+            function moveall(obj,attr,step,target,endfn)
+            {
+                //一上来清空所有定时器防止越来越快
+                clearInterval(obj.timer);
+                //判断step是正的还是负的
+                step = Number(target)>parseFloat(getStyle(obj,attr))?Number(step):-Number(step);  //判断一下step是正的还是负的
+                //参数判断完了,下面开始运动函数
+                obj.timer = setInterval(function(){
+                   var speed = parseFloat(getStyle(obj,attr)) + step;      //获取到每一次的距离
+                    if(speed>=Number(target)&&step>0||speed<=Number(target)&&step<0)
+                    {
+                        speed = Number(target);      //这里我做了个判断当要是超过距离的时候，我就把他拉回来
+                    }
+                    obj.style[attr] = speed+"px";       //赋值
+                    if(speed == Number(target))
+                    {
+                       clearInterval(obj.timer);
+                        endfn&&endfn();  //执行回调函数
+                    }
+                },100)
+            }
+            //封装运动函数结束
+            //开始执行向上点击事件
+            document.getElementById(Top).onclick = function(){
+                //获取到内容的高度
+                var contentHeight = parseFloat(getStyle(document.getElementById(ContentId),"height"));  //获取到内容的高度
+                var BoxHeight = parseFloat(getStyle(document.getElementsByClassName("content_all")[0],"height"));  //获取到BOX的高度
+                var target = contentHeight-BoxHeight ;  //获取到要走的距离
+                moveall(document.getElementById(ContentId),"top",10,-target);
+            }
+            //向上点击事件结束
+            //开始执行向下点击事件
+            document.getElementById(Bottom).onclick = function(){
+              var top = parseInt(getStyle(document.getElementById(ContentId),"top"));
+                if(top==0)
+                {
+                    window.alert("到头了");
+                }else
+                {
+                    moveall(document.getElementById(ContentId),"top",10,0);
+                }
+            }
+            //向下点击事件结束
+        }
+    }
+</script>
+</html>

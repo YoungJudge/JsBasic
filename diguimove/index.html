@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>盒子点击后上去在下来</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    div{background:red;width:100px;height:100px;line-height:100px;text-align:center;background:red;position:absolute;left:0px;top:50px;}
+</style>
+<body>
+<p>鼠标左键点击一下开始向下移动，再点击就上移动</p>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
+<div>6</div>
+<div>7</div>
+<div>8</div>
+<div>9</div>
+<div>10</div>
+</body>
+<script>
+    /*第一步初始化*/
+    var DivAll = document.getElementsByTagName("div"); //获取到所有的DIV
+    for(var i=0;i<DivAll.length;i++)
+    {
+    DivAll[i].style["left"] = ((i*120)+30)+"px";  //这里可以理解为一个公式(i*(宽度加间隔)+起始距离的间距)
+    }
+    /*初始化结束*/
+    /*封装工具类*/
+    function getStyle(obj,attr){
+        return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];  //封装好获取的函数
+    }
+    function move(obj,attr,step,target,endfn){
+        //判断step正的还是负的
+        step = target-parseFloat(getStyle(obj,attr))>0?step:-step;  //>0不能少要不然会出现判断错误或者直接target>初始就完事了
+        clearInterval(obj.timer);  //每一次都清空
+        obj.timer = setInterval(function(){
+            var speed = parseFloat(getStyle(obj,attr))+step;  //获取距离
+            if(speed>=target&&step>0||speed<=target&&step<0)
+            {
+                speed = target;
+            }
+            obj.style[attr] = speed+"px";
+            if(speed==target)
+            {
+                clearInterval(obj.timer);
+                endfn&&endfn();
+            }
+        },10)
+    }
+    /*封装工具类结束*/
+    var countNum = 0 ;//点击次数计数器
+    var countflag = true;
+     document.onclick = function(){
+         if(countflag)
+         {
+             countflag = false;
+             countNum++;
+             if(countNum%2==0)  //偶数
+             {
+                shakeUp();
+
+             }else  //基数
+             {
+                 shakeDown();
+             }
+         }
+
+     }
+    /*封装运动函数*/
+    var flag = true;
+    function shakeDown(){
+        if(flag)
+        {
+            flag = false;
+            var index = 0 ;
+            /*回调函数*/
+            function callback(){
+                 ++index;
+                flag = true;
+                if(index==DivAll.length)
+                {
+                    countflag = true;  //都执行完了我才打开。才允许第二次点击
+                    return;
+                }else
+                {
+                      move(DivAll[index],"top",10,500,callback);
+                }
+            }
+            /*回调函数结束*/
+            /*这里我用了递归思想。每次调用的都是他自身*/
+                move(DivAll[index],"top",10,500,callback)
+        }
+    }
+    function shakeUp()
+    {
+        if(flag)
+        {
+            flag = false;
+            var index = DivAll.length-1 ;
+            /*回调函数*/
+            function callback(){
+                --index;
+                flag = true;
+                if(index==-1)
+                {
+                    countflag = true;
+                    return;
+                }else
+                {
+                    move(DivAll[index],"top",10,50,callback);
+                }
+            }
+            /*回调函数结束*/
+            /*这里我用了递归思想。每次调用的都是他自身*/
+            move(DivAll[index],"top",10,50,callback)
+        }
+    }
+
+
+    /*封装运动函数结束*/
+</script>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>仿苹果做的输入错误抖动</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    .p1{width:285px;height:40px;font-size:20px;position:absolute;left:50%;top:25%;margin-left: -142px;margin-top:-20px;}
+    #img1{width:200px;height:300px;display:block;position:absolute;left:50%;top:50%;margin-left:-100px;margin-top:-150px;}
+</style>
+<body>
+<p class="p1">在图片上点击一次以后来回抖动</p>
+<img id="img1" src="images/1.png">
+</body>
+<script>
+  /*封装工具类开始*/
+  function getStyle(obj,attr){
+      return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+  }
+  /*封装运动函数开始*/
+  function move(obj,attr,step,target,endfn)
+  {
+
+     /*第一步要先判断step是正的还是负的*/
+     step = parseFloat(getStyle(obj,attr))-target?-step:step;
+      //第二部开始清除以前所有的定时器
+      clearInterval(obj.timer);
+      //第二部开始定时器
+      obj.timer = setInterval(function(){
+          var speed = parseFloat(getStyle(obj,attr))+step;  //获取到每次的距离
+          if(speed>=target&&step>0||speed<=target&&step<0)       //要是距离大于或者小于我就拉回来
+          {
+              speed = target;
+          }
+          obj.style[attr] = speed+"px";  //赋值
+          if(speed==target)
+          {
+              clearInterval(obj.timer);  //清除定时器
+              endfn&&endfn();        //执行回调方法
+          }
+      },100)
+  }
+  /*封装运动函数结束*/
+  /*封装工具类结束*/
+   function shake(obj,attr,endfn){
+       var arr = [] ;
+       for(var i=20;i>0;i=i-2)
+       {
+           arr.push(i,-i);
+       }
+       arr.push(0);
+       var index = 0 ;
+       var first = parseInt(getStyle(obj,attr));//这里必须写在定时器的外面，因为要是不写他会每次都获取
+       obj.timer = setInterval(function(){
+           ++index;
+           obj.style[attr] = (first+arr[index])+"px";
+           if(index==arr.length)
+           {
+               clearInterval(obj.timer);
+               endfn&&endfn();
+           }
+       },20)
+   }
+   var flag = true;
+   document.getElementById("img1").onclick = function(){
+       if(flag)
+       {
+           flag = false;
+           shake(this,"left",function(){flag = true});
+       }
+   }
+</script>
+</html>

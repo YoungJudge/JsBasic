@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>延迟菜单</title>
+</head>
+<body>
+<!--1.先说思路就是最外面是个最大的框子(定位是position:relative;这样好显示出来)，里面2大部分第一部分是导航第二部分是子导航。这样利用setTimeout做到延迟显示出来。-->
+<style>
+    *{margin:0px;padding:0px;}
+    ul{list-style-type: none;}
+    li{float:left;}
+    #box{width:400px;height:110px;margin:0 auto;margin-top:100px;position:relative;}
+    #nav_header{width:400px;height:50px;margin-bottom:10px;}
+    #nav_header li {width:100px;height:50px;overflow: hidden;background:cornflowerblue;}
+    #nav_header li a {color:white;text-decoration: none; font-size:18px;border-right:1px dashed white;display:block;width:99px;height:30px;margin:0 auto;margin-top:10px;text-align:center;line-height:30px;}
+    #nav_content li{margin-top:10px;width:400px;height:40px;overflow: hidden;position:absolute;top:50px;left:0px;background:red;display:none;}
+    #nav_content li div{float:left;border-right:1px solid black;width:99px;height:40px;line-height:40px;text-align:center;cursor:pointer;}
+
+</style>
+<div id="box">
+    <!--首先第一个主栏目-->
+    <ul id="nav_header">
+        <li><a href="">首页</a></li>
+        <li><a href="">关于我们</a></li>
+        <li><a href="">作品展示</a></li>
+        <li><a href="">家园地址</a></li>
+    </ul>
+    <!--主栏目结束-->
+    <!--子栏目开始-->
+    <ul id="nav_content">
+        <!--首页下面的内容-->
+        <li>
+            <div>首页1</div>
+            <div>首页2</div>
+            <div>首页3</div>
+            <div>首页4</div>
+        </li>
+        <!--首页下面的内容结束-->
+        <!--关于我们下面的内容-->
+        <li>
+            <div>关于我们1</div>
+            <div>关于我们2</div>
+            <div>关于我们3</div>
+            <div>关于我们4</div>
+        </li>
+        <!--&lt;!&ndash;关于我们下面的内容结束&ndash;&gt;-->
+        <!--&lt;!&ndash;作品展示下面的内容&ndash;&gt;-->
+        <li>
+            <div>作品展示1</div>
+            <div>作品展示2</div>
+            <div>作品展示3</div>
+            <div>作品展示4</div>
+        </li>
+        <!--&lt;!&ndash;作品展示下面的内容结束&ndash;&gt;-->
+        <!--&lt;!&ndash;家园地址下面的内容&ndash;&gt;-->
+        <li>
+            <div>家园地址1</div>
+            <div>家园地址2</div>
+            <div>家园地址3</div>
+            <div>家园地址4</div>
+        </li>
+        <!--家园地址下面的内容结束-->
+    </ul>
+    <!--子栏目结束-->
+</div>
+</body>
+<script>
+    function getStyle(obj,attr)
+    {
+        return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+    }
+    //第一步设置好子元素的位置
+    var lison = document.getElementById("nav_content").getElementsByTagName("li");  //获取到所有的子元素
+    var widthall = getStyle(document.getElementById("nav_content"),"width");  //获取到子元素最外面包裹的元素的宽度
+    var width = getStyle(document.getElementById("nav_header").getElementsByTagName("li")[0],"width");  //获取到父元素的宽度
+    var timer = null ; //设定定时器
+    for(var i=0;i<lison.length;i++)
+    {
+        lison[i].style["left"] = ((parseInt(width)/2)+i*100)-parseInt(widthall)/2+"px";
+        //这里的想法就是 比如第一个 中心位置就是50-200
+//         第二个就是150-200
+//        第三个就是250-200
+//        第四个就是350-200
+    }
+    //设置结束
+    for(var n=0;n<document.getElementById("nav_header").getElementsByTagName("li").length;n++)
+    {
+        document.getElementById("nav_header").getElementsByTagName("li")[n].index = n ;  //赋值
+
+        //首页li上面一个鼠标一入一出
+        document.getElementById("nav_header").getElementsByTagName("li")[n].onmouseover = function(){
+            document.getElementById("nav_content").getElementsByTagName("li")[this.index].style.display = "block";
+        }
+        document.getElementById("nav_header").getElementsByTagName("li")[n].onmouseleave = function(){
+            var index = this.index;  //必须先赋值要不然传递不到下面
+            timer = setTimeout(function(){
+                document.getElementById("nav_content").getElementsByTagName("li")[index].style.display = "none";
+            },100)
+        }
+        //首页页上面一入一出
+        //子元素移入移除
+        document.getElementById("nav_content").getElementsByTagName("li")[n].onmouseover = function(){
+            clearTimeout(timer);
+            this.style.display = "block";
+        }
+        document.getElementById("nav_content").getElementsByTagName("li")[n].onmouseleave = function(){
+
+            this.style.display = "none";
+        }
+        //子元素移入移除
+    }
+</script>
+</html>

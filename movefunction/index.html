@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>封装运动函数</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    #btn1{position:absolute;top:10px;left:10px;}
+    #box{width:150px;height:150px;position:absolute;left:10px;top:40px;background:red;}
+    #infor{width:800px;text-align:center;text-indent:30px;height:300px;font-size:16px;border:1px solid black;position:absolute;left:50%;top:50%;margin-top:-150px;margin-left:-400px;}
+</style>
+<body>
+<p id="infor">
+    这里我主要是想封装一个运动函数。主要是告诉大家一般情况我是怎么想的（俗成套路）<br>
+    一般项目经理要么给你一个GIF图(看图写代码)要么就是口述效果.就这2种情况<br>
+    许多人遇到自己没见过的效果，或者没写过的效果就会慌张，或者不知道怎么办了 <br>
+    下面我告诉你该怎么去想<br>
+    所有的JS效果都会具备3要素：1.时间  2.事件  3.运动轨迹 <br>
+    我们就从这3点开始写效果.<br>
+    (1)首先确定的最简单的:事件<br>
+    鼠标移入移出点击，滚轮滚动。鼠标滑动等等这些你首先确定下来。<br>
+    (2)运动轨迹：这里特别说明，你要是滚动啊，旋转啊。你放心定位都是绝对定位。错不了。改变的就是位置<br>
+    (3)时间:定时器最后在考虑，一上来就考虑你没办法写代码了。。<br>
+    下面是我封装的一个运动函数仅供参考点击移动后移动(重要的是思路)<br>
+</p>
+<input id="btn1" type="button" value="请点击我运动">
+<div id="box">
+
+</div>
+</body>
+<script>
+    /*封装获取函数*/
+    function getStyle(obj,attr){
+        return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+    }
+    /*封装获取函数结束*/
+    function move(obj,attr,step,target,endfn)
+    {
+        //第一步判断step是正的还是负的如果起点比终点大那肯定就是负的。要是小则是正的
+        step = parseFloat(getStyle(obj,attr))>target?-step:step;
+        //判断结束
+        //一上来都清空防止越走越快
+        clearInterval(obj.timer);
+        obj.timer = setInterval(function(){
+            var speed = parseFloat(getStyle(obj,attr))+step;
+            if(speed>=target&&step>0||speed<=target&&step<0)
+            {
+                speed = target;  //当超出以后就拉回来。
+            }
+            obj.style[attr] = speed+"px";
+            if(speed==target)
+            {
+                clearInterval(obj.timer);
+                endfn&&endfn();
+            }
+        },100)
+
+    }
+    /*封装结束*/
+    document.getElementById("btn1").onclick = function(){
+        move(document.getElementById("box"),"left",10,800,function(){window.alert("到终点了")});
+    }
+</script>
+</html>

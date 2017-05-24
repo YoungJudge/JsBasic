@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品的加减法</title>
+</head>
+<body>
+<style>
+    *{margin:0px;padding:0px;}
+    .main{width:600px;height:600px;border:1px solid #ccc;position:absolute;top:50%;left:50%;margin-left:-300px;margin-top:-300px;}
+    .main>div{width:600px;height:99px;border-bottom:1px solid #ccc;line-height:99px;text-align:center;}
+    .main>div>span{margin-right:10px;}
+    .main>div button{width:24px;height:24px;margin-right:10px;}
+    .main>div>label{color:red;font-size:16px;}
+    #addbutton{width:50px;height:30px;}
+</style>
+<div class="main" id="main">
+    <div><button>-</button><span>0</span><button>+</button>单价: <em>12.52</em>元 小计：<label>0</label>元</div>
+    <div><button>-</button><span>0</span><button>+</button>单价: <em>10.56</em>元 小计：<label>0</label>元</div>
+    <div><button>-</button><span>0</span><button>+</button>单价: <em>18.77</em>元 小计：<label>0</label>元</div>
+    <div><button>-</button><span>0</span><button>+</button>单价: <em>19.31</em>元 小计：<label>0</label>元</div>
+    <div><button>-</button><span>0</span><button>+</button>单价: <em>21.1</em>元 小计：<label>0</label>元</div>
+    <div style="border:none;"><button id="addbutton">总价</button><span>总共</span>总价: <label>0</label>元</div>
+</div>
+</body>
+<script>
+    yunsuan({"BoxId":"main","ResultId":"addbutton"});      //调用函数
+    function yunsuan(obj)
+    {
+        var BoxId = obj.BoxId;  //获取到传递的参数
+        var ResultId = obj.ResultId;   //获取到最终的button的Id
+       for(var i=0;i<document.getElementById(BoxId).getElementsByTagName("div").length-1;i++)
+       {
+           addbutton(document.getElementById(BoxId).getElementsByTagName("div")[i]);
+       }
+          function addbutton(obj){
+               obj.index = 0 ;
+              obj.getElementsByTagName("button")[1].onclick = function(){
+                  obj.index++;
+                  obj.getElementsByTagName("span")[0].innerHTML = obj.index;
+                  var NumD = obj.getElementsByTagName("em")[0].innerHTML.split(".");
+                  var splitStr = obj.getElementsByTagName("em")[0].innerHTML.replace(".","").toString();
+                  obj.getElementsByTagName("label")[0].innerHTML = splitStr*parseInt(obj.index)/Math.pow(10,NumD[1].length);
+              }
+              obj.getElementsByTagName("button")[0].onclick = function(){
+                  if(obj.index==0)
+                  {
+                      window.alert("不能比0小");
+                  }else
+                  {
+                      //我的思路就是首先找到小数点后面的位数，然后去掉小数点，再用这个数字去运算然后再除以扩大的倍数
+                      //这样就避免了19.31*100 = 1930.9999999999999999998
+                      obj.index--;
+                      obj.getElementsByTagName("span")[0].innerHTML = obj.index;
+                      var NumD = obj.getElementsByTagName("em")[0].innerHTML.split(".");
+                      var splitStr = obj.getElementsByTagName("em")[0].innerHTML.replace(".","").toString();
+                      obj.getElementsByTagName("label")[0].innerHTML = splitStr*parseInt(obj.index)/Math.pow(10,NumD[1].length);
+                  }
+              }
+          }
+         document.getElementById(ResultId).onclick = function(){
+             var Num = 0 ;  //用来求和
+             for(var i= 0;i<document.getElementById(BoxId).getElementsByTagName("label").length-1;i++)  //必须减去1因为要是不减去1她会加上最底部求和那个
+             {
+               Num += parseFloat(document.getElementById(BoxId).getElementsByTagName("label")[i].innerHTML);
+             }
+             this.parentNode.getElementsByTagName("label")[0].innerHTML = Num.toFixed(2);
+         }
+    }
+
+</script>
+</html>

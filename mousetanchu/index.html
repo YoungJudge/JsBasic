@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>鼠标放上去效果</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    ul{list-style-type: none;width:750px;}
+    li{width:200px;height:200px;margin-left:50px;margin-top:50px;background:red;line-height:200px;text-align: center;color:white;float:left;position:relative;}
+</style>
+<body>
+<ul id="container">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+</ul>
+</body>
+<script>
+    var length = document.getElementById("container").getElementsByTagName("li").length;
+    for(var i=0;i<length;i++)
+    {
+        document.getElementById("container").getElementsByTagName("li")[i].index= i ;
+        document.getElementById("container").getElementsByTagName("li")[i].onmouseover = function(){
+		    for(var i=0;i<document.getElementsByClassName("odiv").length;i++)
+			{
+			 document.getElementsByClassName("odiv")[i].style["display"] = "none";
+			}
+            this.innerHTML = this.index+'<div class="odiv" style=" line-height:50px;background:blue;position:absolute;left:100px;top:50px;width:100px;height:50px;">'+this.index+'</div>';
+          }
+		          document.getElementById("container").getElementsByTagName("li")[i].onmouseleave = function(){
+                  		    for(var i=0;i<document.getElementsByClassName("odiv").length;i++)
+			{
+			 document.getElementsByClassName("odiv")[i].style["display"] = "none";
+			}
+            this.innerHTML = this.index;
+          }
+    }
+</script>
+</html>

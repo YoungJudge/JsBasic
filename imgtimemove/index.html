@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>时间动画第二回</title>
+</head>
+<body>
+<style>
+    *{margin:0px;padding:0px;}
+    ul{list-style-type: none;}
+    li{float:left;}
+    #timer{width:1140px;height:50px;position:absolute;left:50%;top:50%;margin-left:-720px;margin-top:-25px;}
+    #timer li{width:50px;height:50px;position:relative;margin-right:10px;overflow: hidden;}
+    #timer li div{position:absolute;left:0px;top:0px;width:50px;height:100px;}
+    #timer li div img{width:50px;height:50px;display:block;}
+</style>
+<ul id="timer">
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+    <li>
+        <div><img src="images/0.JPG" alt=""><img src="images/0.JPG" alt=""></div>
+    </li>
+</ul>
+</body>
+<script>
+    /*首先开始需要写工具函数
+     * 第一步封装获取函数
+     * 第二步封装运动函数
+     * 第三步封装时间函数
+     * 第四步给DIV里面的第二个图片赋值
+     * 第五步上下两个图片的地址比较，要是不一样就开始运动。要是一样就不运动。运动完以后则拉回来。然后给第一个图片地址赋值
+     * */
+    /*第一步开始写工具函数*/
+    //封装获取函数
+    function getStyle(obj,attr)
+    {
+        return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];  //IE下面是obj.currentStyle 谷歌下面是getComputedStyle(obj)
+    }
+    //封装获取函数结束
+    //封装运动函数
+    //既然是运动函数就需要传递几个条件(参数)
+    // 1.对象(你得知道让谁动吧)
+    // 2.方向(你得告诉他朝哪边走吧)
+    // 3.速度 (你得告诉他一次走多少吧)
+    // 4.终点(你得告诉他什么时候停止吧)
+    // 5.回调函数(到达终点以后干点什么吧)
+    function Imove(obj,attr,step,target,endfn)
+    {
+        //防止累加,越来越快。这样一上来我都从0开始计算
+        clearTimeout(obj.timer);
+        //主要是判断速度是正的还是负的，上来先比较。我的思路是要是目标的位置比初始的位置大，则速度肯定是正的，要是小则速度肯定是负的
+        step =  target>parseInt(getStyle(obj,attr))? step:-step;
+        obj.timer = setInterval(function(){
+            var dis = parseInt(getStyle(obj,attr))+step;   //获取到每次走了之后距离最开始的位置
+            //判断一下当走的距离要是超过了终点，则必须拉回来。要是没超过。则继续走.
+            if(dis>=target&&step>0||dis<target&&step<0)
+            {
+                dis = target;
+            }
+            obj.style[attr] = dis+"px";   //给这个对象赋值，让他自己慢慢走。
+            if(dis==target)               //当到达了终点了，就不让他走了。这个时候你需要清除定时器了。因为没用了。
+            {
+                clearInterval(obj.timer);   //清除定时器
+                endfn&&endfn();           //执行回调方法
+            }
+        },100)
+    }
+    //封装运动函数结束
+    //封装位数函数
+    // 1位变2位。防止位数不够。思路：>10就是本身，小于10则在前面添加0
+    function toTwo(str)
+    {
+        return str>=10?str.toString():"0"+str;
+    }
+    //封装位数函数结束
+    /*第一步结束*/
+    /*第二部开始封装时间函数*/
+    function getTimer()
+    {
+        var NewTimer =  new Date();  //创建一个日期函数
+        var Now_Year = NewTimer.getFullYear();  //获取到年
+        var Now_Month = NewTimer.getMonth()+1;  //获取到月，因为月从0开始所以必须加1
+        var Now_Date = NewTimer.getDate();     //获取到日期，几号
+        var Now_Hours = NewTimer.getHours();  //获取到小时
+        var Now_Minutes = NewTimer.getMinutes();  //获取到分钟
+        var Now_Seconds = NewTimer.getSeconds()   //获取到秒数
+        var str = (Now_Year +"年"+toTwo(Now_Month)+"月"+toTwo(Now_Date)+"日"+toTwo(Now_Hours)+":"+toTwo(Now_Minutes)+":"+toTwo(Now_Seconds)).split("");
+        //字符串变成数组，这里必须切割一下，要不然循环后不能给字符串里面直接改变值
+        for(var i=0;i<str.length;i++)
+        {
+            switch(str[i])
+            {
+                case "年": str[i] ="images/nian.JPG"; break;
+                case "月": str[i]="images/yue.JPG"; break;
+                case "日": str[i]="images/ri.JPG"; break;
+                case ":": str[i]="images/colon.JPG"; break;
+                default:  str[i] = "images/"+str[i]+".JPG";break;
+            }
+        }
+        return str;
+    }
+    /*封装时间函数结束*/
+    /*第三部先赋值，然后比较上一个和下一个(赋值) 这里传进来一个参数就是最外面的DIV的对象
+     */
+    function repearImg(obj,index)
+    {
+        var str = getTimer(); //获取到数组
+        var img_1 = obj.getElementsByTagName("img")[0];   //获取到第一个图片对象
+        var img_2 = obj.getElementsByTagName("img")[1];   //获取到第二个图片对象
+        img_2.src=str[index];  //赋值结束这里要是不传递index没办法获取到序号
+        //然后开始比较
+        //这里必须注意不能拿img_1.src来判断是不是等于images/colon.JPG,因为地址不要比较这样永远不相等。
+        //判断的目的就是为了让冒号能闪烁。
+        if(str[index]=="images/colon.JPG")
+        {
+            img_1.src = "images/colon.JPG";
+            setTimeout(function(){
+                img_1.src = "images/black.JPG";
+            },500)
+        }else if(img_1.src!=img_2.src)
+        {
+            Imove(obj,"top",10,-50,function(){
+                img_1.src = img_2.src;  //把2赋值给1
+                obj.style["top"] = 0+"px";   //然后在拉回来
+            })
+        }
+    }
+    //开始调用
+    var Content_1 = document.getElementById("timer");//获取到最外面的盒子
+    var oldtime = getTimer();  //获取到老的时间
+    //初始化一下
+    for(var i=0;i<oldtime.length;i++){
+        Content_1.getElementsByTagName("div")[i].getElementsByTagName("img")[0].src = oldtime[i];
+    }
+    //初始化结束
+    //开始自动走
+    timer = setInterval(function(){
+        for(var i=0;i<Content_1.getElementsByTagName("div").length;i++)
+        {
+            repearImg(Content_1.getElementsByTagName("div")[i],i);
+        }
+    },1000)
+    //自动结束
+
+</script>
+</html>

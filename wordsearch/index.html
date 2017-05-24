@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>字符串查找替换删除</title>
+</head>
+<style>
+    *{margin:0px;padding:0px;}
+    body{background:#EFEFE7;}
+    ul{list-style-type:none;}
+    li{float:left;}
+   .container{width: 700px;height:540px;position:absolute;left:50%;top:50%;margin-left:-350px;margin-top:-270px;background:#EFEFE7;}
+   .main{width:700px;height:350px;background:white;}
+   .main span{background:red;color:white;}
+    .nav{border:15px solid red;height:140px;background:#E7E7B5;width:670px;margin-top:18px;position:relative;display:none;}
+    .main p{background: #fff;  width: 600px;  padding: 30px 50px;  font-family: '微软雅黑';  font-size: 22px;  line-height: 36px;}
+    .nav .close{font-size:36px;position:absolute;right:10px;top:10px;font-weight:bold;cursor: pointer;}
+    .nav_content{width:600px;height:100px;position:absolute;left:50%;top:50%;margin-left:-300px;margin-top:-50px;}
+    #tabul{width:590px;height:40px;border-bottom:5px solid red;}
+    #tabul li{font-size:26px;background:#E7E7B5;color:black;padding:5px 10px;cursor: pointer;}
+    #tabul li.on{background:red;color:white;}
+    .content_content{width:100%;height:60px;}
+    .content_content div{display: none;}
+    .content_content div.on{display: block;}
+    .content_content div input{width:200px;height:30px;margin-top:15px;margin-left:20px;}
+    .content_content div button{width:60px;height:30px;font-size:18px;margin-left:15px;}
+    .rightnav{font-size:36px;width:80px;height:auto;position:absolute;left:50%;top:50%;margin-left:350px;margin-top:-270px;}
+    .rightnav span{padding:5px 10px;background:black;color:white;width:80px;display:block;cursor: pointer;}
+    .rightnav ul {display:none;}
+    .rightnav ul li {margin-top:10px;background:#E7E7B5;width:80px;padding:5px 10px;;width:100%;}
+</style>
+<body>
+<div class="container">
+<!--文字内容开始-->
+    <div class="main" id="main">
+        <p>
+        天津愚人课堂是一支充满温馨并且极富人情味的IT培训团队；2010-2011年，愚人深度关注WEB前端开发领域，为此精心研发出一套灵活而充满趣味的JavaScript课程。
+        2011-2013年，愚人精准研发出最新HTML5\CSS3课程，并推出远程培训课程方案，尝试将线下优良的培训模式移植到远程网络培训中,
+        希望尽最大努力，将一种快乐愉悦的授课体验、结合HTML\CSS\JS知识点，精准传递给天津愚人课堂的每一位学员。
+        </p>
+    </div>
+    <!--文字内容结束-->
+    <!--导航-->
+    <div class="nav" id="nav">
+          <!--关闭箭头开始-->
+         <div id="close" class="close">X</div>
+         <!--关闭箭头结束-->
+         <!--里面内容合计开始-->
+          <div class="nav_content">
+           <!--Ul导航开始-->
+               <ul id="tabul">
+                   <li class="on">查找</li>
+                   <li>替换</li>
+               </ul>
+              <!--UL导航结束-->
+              <!--ULcontent内容合集-->
+              <div class="content_content" id="content_content">
+                 <!--查找内容合集-->
+                  <div class="on">
+                      <input type="text" id="search"> <button id="searchbutton">查找</button>
+                  </div>
+                  <!--查找内容合集结束-->
+                  <!--替换内容开始-->
+                  <div>
+                      <input type="text" id="tihuan1"> <input type="text" id="tihuan2"><button id="tihuanbutton">替换</button>
+                  </div>
+                  <!--替换内容结束-->
+              </div>
+              <!--ULcontent内容合集-->
+          </div>
+        <!--里面内容合计结束-->
+
+    </div>
+    <!--导航结束-->
+</div>
+<!--右侧导航开始-->
+<div class="rightnav" id="rightnav">
+    <span>展开</span>
+    <ul>
+        <li>查找</li>
+        <li>替换</li>
+    </ul>
+</div>
+<!--右侧导航结束-->
+</body>
+<script>
+    /*选项卡开始*/
+    var liall =   document.getElementById("tabul").getElementsByTagName("li");
+    var contentli = document.getElementById("content_content").getElementsByTagName("div");
+    for(var i=0;i<liall.length;i++)
+    {
+        liall[i].index = i ;
+        liall[i].onclick = function(){
+            for(var i=0;i<liall.length;i++)
+            {
+                liall[i].className = "";
+                contentli[i].className = "";
+            }
+            this.className = "on";
+            document.getElementById("content_content").getElementsByTagName("div")[this.index].className = "on";
+        }
+    }
+    /*选项卡结束*/
+    document.getElementById("close").onclick = function(){
+         document.getElementById("nav").style["display"] = "none";
+    }
+    /*展开收缩*/
+    var flag = true;
+    document.getElementById("rightnav").onclick = function(){
+        if(flag)
+        {
+            this.getElementsByTagName("ul")[0].style["display"] = "block";
+            flag = false;
+        }else
+        {
+            this.getElementsByTagName("ul")[0].style["display"] = "none";
+            flag = true;
+        }
+
+    }
+    /*展开收缩结束*/
+    //查找
+    document.getElementById("rightnav").getElementsByTagName("li")[0].onclick = function(){
+        document.getElementById("nav").style["display"] = "block";
+    }
+    //收缩
+    document.getElementById("rightnav").getElementsByTagName("li")[1].onclick = function(){
+        document.getElementById("nav").style["display"] = "block";
+        for(var i=0;i<liall.length;i++)
+        {
+            liall[i].className = "";
+            contentli[i].className = "";
+        }
+        document.getElementById("content_content").getElementsByTagName("div")[1].className = "on";
+        document.getElementById("tabul").getElementsByTagName("li")[1].className = "on";
+    }
+    //字符串查找
+    var string = document.getElementById("main").getElementsByTagName("p")[0].innerHTML;  //获取到文本
+    document.getElementById("searchbutton").onclick = function(){
+        var search_value = document.getElementById("search").value;
+        if(string.indexOf(search_value)!=-1)
+        {
+        document.getElementById("main").getElementsByTagName("p")[0].innerHTML = string.split(search_value).join("<span>"+search_value+"</span>");
+        }else
+        {
+            window.alert("对不起,请重新输入");
+        }
+    }
+    //字符替换
+    document.getElementById("tihuanbutton").onclick = function(){
+        var value1 = document.getElementById("tihuan1").value;
+        var value2 = document.getElementById("tihuan2").value;
+        if(string.indexOf(value1)!=-1)
+        {
+            document.getElementById("main").getElementsByTagName("p")[0].innerHTML = string.split(value1).join("<span>"+value2+"</span>");
+        }else
+        {
+            window.alert("对不起,请重新输入");
+        }
+
+    }
+
+</script>
+</html>

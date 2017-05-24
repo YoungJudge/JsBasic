@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全选和多选</title>
+</head>
+<body>
+<style>
+    *{margin:0px;padding:0px;}
+    ul{list-style-type: none;}
+    .main{width:500px;height:300px;margin:0 auto;margin-top:100px;}
+    .main li{width:500px;height:50px;line-height: 50px;}
+    .main li span{margin-left:30px;}
+    .buttonall{width:500px;height:50px;margin:0 auto;background:blanchedalmond;line-height:50px;}
+    .buttonall input{margin-right:10px;margin-left:15px;}
+</style>
+<ul class="main">
+    <li><input type="checkbox"><span>梁博--想你的夜</span></li>
+    <li><input type="checkbox"><span>李宗盛--山丘</span></li>
+    <li><input type="checkbox"><span>莫文蔚--电台情歌</span></li>
+    <li><input type="checkbox"><span>梁静茹--勇气</span></li>
+    <li><input type="checkbox"><span>邓紫棋--你不是真正的快乐</span></li>
+    <li><input type="checkbox"><span>周华健--忘忧草</span></li>
+</ul>
+<div class="buttonall"><input type="checkbox" id="allclick">全选<input id="danxuan"type="checkbox">反选</div>
+</body>
+<script>
+    document.getElementsByClassName("buttonall")[0].getElementsByTagName("input")[0].style["margin-left"]="0px";
+    var bgcolor = ["greenyellow","deepskyblue"];
+    var liall = document.getElementsByClassName("main")[0].getElementsByTagName("li");  //获取到所有的li
+    var buttonall = document.getElementsByClassName("buttonall")[0].getElementsByTagName("input")[0];  //全选
+    var fanall = document.getElementsByClassName("buttonall")[0].getElementsByTagName("input")[1];   //反选
+    //第一步设置所有li的背景,和鼠标放上去的效果
+    for(var i=0;i<liall.length;i++)
+    {
+        liall[i].index = i;
+        liall[i].style["background"]= bgcolor[i%2];
+        liall[i].onmouseover = function(){
+            this.style["background"] = "#ccc";
+        }
+        liall[i].onmouseleave = function(){
+            //这里前面必须要有判断
+            if(!this.getElementsByTagName("input")[0].checked)
+            {
+                   this.style["background"]= bgcolor[this.index%2];
+            }
+        }
+        liall[i].onclick = function () {
+              buttonall.checked = false;
+               fanall.checked = false;
+                var checked = this.getElementsByTagName("input")[0].checked;
+            if(checked)
+            {
+                this.getElementsByTagName("input")[0].checked = false;
+            }else
+            {
+                this.getElementsByTagName("input")[0].checked = true;
+            }
+        }
+    }
+    //设置背景色结束,和鼠标放上去的效果结束
+    //全选
+    buttonall.onclick = function(){
+        fanall.checked = false;
+        if(buttonall.checked)
+        {
+            for(var i=0;i<liall.length;i++)
+            {
+                liall[i].getElementsByTagName("input")[0].checked = true;  //全部选中
+                liall[i].style["background"] = "#ccc";
+            }
+        }else
+        {
+            for(var i=0;i<liall.length;i++)
+            {
+                liall[i].getElementsByTagName("input")[0].checked = false;  //全部没选中
+                liall[i].style["background"] = bgcolor[i% 2];
+            }
+        }
+
+    }
+    //阻止事件冒泡要不然checkbox没法点
+    for(var m=0;m<document.getElementsByClassName("main")[0].getElementsByTagName("input").length;m++)
+    {
+        document.getElementsByClassName("main")[0].getElementsByTagName("input")[m].onclick = function(event){
+            event.stopPropagation();  //阻止事件冒泡
+        }
+    }
+    //反选
+    fanall.onclick = function(){
+        buttonall.checked = false;
+        if(fanall.checked)
+        {
+            for(var i=0;i<liall.length;i++)
+            {
+                if(liall[i].getElementsByTagName("input")[0].checked)
+                {
+                    liall[i].getElementsByTagName("input")[0].checked = false;
+                    liall[i].style["background"] = bgcolor[i% 2];
+                }else
+                {
+                    liall[i].getElementsByTagName("input")[0].checked = true;
+                    liall[i].style["background"] = "#ccc";
+                }
+            }
+        }else
+        {
+            for(var i=0;i<liall.length;i++)
+            {
+                liall[i].getElementsByTagName("input")[0].checked = false;
+                liall[i].style["background"] = bgcolor[i% 2];
+            }
+        }
+    }
+</script>
+</html>

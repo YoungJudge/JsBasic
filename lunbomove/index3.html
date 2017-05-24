@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>无缝滚动</title>
+</head>
+<style type="text/css">
+    *{margin:0px;padding:0px;}
+    ul{list-style-type: none;}
+    li{float:left;}
+    #container{max-width:1000px;height:416px;position:relative;margin-top:30px;overflow: hidden;}  /*这里定位只能是相对定位，并且只能是超出部分隐藏*/
+    #pic_all{position:absolute;left:0px;top:0px;}
+    #pic_all li{width:1000px;height:416px;}
+    #pic_all li a img {display:block;width: 100%;height:100%;}
+    #tabbutton{position:absolute;left:50%;bottom:10px;transform:translate(-50%,-50%);width:270px;height:30px;}
+    #tabbutton li {width:30px;height:30px;margin-right:15px;background:white;border-radius: 50%;line-height:30px;text-align: center;cursor:pointer;}
+    #tabbutton li.active{background:blue;}
+    #left{width:28px;height:40px;position:absolute;left:0px;top:160px;background:url(images/left-arrow.png) no-repeat center center;}
+    #right{width:28px;height:40px;position:absolute;right:0px;top:160px;background:url(images/right-arrow.png) no-repeat center center;}
+</style>
+<body>
+<!--容器开始-->
+<div id="container">
+    <!--大图内容开始-->
+    <ul id="pic_all">
+        <li><a href=""><img src="images/1.png"></a></li>
+        <li><a href=""><img src="images/2.png"></a></li>
+        <li><a href=""><img src="images/3.png"></a></li>
+        <li><a href=""><img src="images/4.png"></a></li>
+    </ul>
+    <!--大图内容结束-->
+    <!--小图选项卡开始-->
+    <ul id="tabbutton">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ul>
+    <!--小图选项卡结束-->
+    <!--左右箭头开始-->
+    <div id="arrow">
+        <div id="left"></div>
+        <div id="right"></div>
+    </div>
+    <!--左右箭头结束-->
+</div>
+<!--容器结束-->
+</body>
+<script>
+    lunbo({"BoxId":"container","ImgAll":"pic_all","ButtonAll":"tabbutton","LeftId":"left","RightId":"right"})
+    function lunbo(obj)
+    {
+        var BoxId = obj.BoxId;       //获取到最外面的BOX
+        var ImgAll = obj.ImgAll;      //获取到内容合计
+        var ButtonAll = obj.ButtonAll;   //获取到Button合计
+        var LeftId = obj.LeftId;          //获取到左边按钮
+        var RightId = obj.RightId;        //获取到右边按钮
+        //初始化
+        var length = document.getElementById(ImgAll).getElementsByTagName("li").length;
+        var width = parseInt(getStyle(document.getElementById(ImgAll).getElementsByTagName("li")[0],"width"));
+        document.getElementById(ImgAll).style["width"] = length*width+"px";
+        //初始化结束
+        /*先写工具类*/
+        //1.获取函数
+        function getStyle(obj,attr){
+            return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+        }
+        //获取函数结束
+        //2.运动函数
+        function move(obj,attr,step,target,endfn){
+            step = target>parseInt(getStyle(obj,attr))?step:-step;   //判断step正的还是负的
+            clearInterval(obj.timer);    //清除定时器
+            obj.timer = setInterval(function(){
+                var speed = parseInt(getStyle(obj,attr))+step;  //获取到每次的速度
+                if(speed>=target&&step>0||speed<=target&&step<0)
+                {
+                    speed = target;
+                }
+                obj.style[attr] = speed+"px";
+                if(speed == target)
+                {
+                    clearInterval(obj.timer);
+                    endfn&&endfn();
+                }
+            },100)
+        }
+
+        //运动函数
+        //清除函数
+        function clearClass(){
+            for(var i=0;i<length;i++)
+            {
+                document.getElementById(ButtonAll).getElementsByTagName("li")[i].className = "";
+            }
+        }
+        //清除函数
+        /*工具类结束*/
+         //下面开始图片轮播
+         var pindex = 0 ;
+         var dindex = 0 ;
+        function autoplay(){
+            clearClass();
+            pindex++;
+            dindex++;
+            if(pindex==length)
+            {
+                document.getElementById(ImgAll).getElementsByTagName("li")[0].style["position"] = "relative";
+                document.getElementById(ImgAll).getElementsByTagName("li")[0].style["left"] = length*width+"px";
+                pindex = 0 ;
+            }
+            move(document.getElementById(ImgAll),"left",300,-dindex*width,function(){
+                if(pindex==0)
+                {
+                    document.getElementById(ImgAll).getElementsByTagName("li")[0].style["position"] = "static";
+                    document.getElementById(ImgAll).style["left"] = "0px";
+                }
+            })
+            if(pindex==0)
+            {
+                dindex = 0 ;
+            }
+            document.getElementById(ButtonAll).getElementsByTagName("li")[dindex].className = "active";
+        }
+        //向下按钮开始
+         document.getElementById(RightId).onclick = function(){
+             clearInterval(timer);
+               autoplay();
+         }
+         //向下按钮结束
+
+         //向左边按钮开始
+        document.getElementById(LeftId).onclick = function(){
+            clearInterval(timer);
+            clearClass();
+            pindex--;
+            dindex--;
+            if(pindex==-1)
+            {
+                pindex = length-1 ;
+                dindex = length-1;
+            }
+            move(document.getElementById(ImgAll),"left",300,-dindex*width,function(){
+                if(pindex==0)
+                {
+                    document.getElementById(ImgAll).getElementsByTagName("li")[0].style["position"] = "static";
+                    document.getElementById(ImgAll).style["left"] = "0px";
+                }
+            })
+            if(pindex==0)
+            {
+                dindex = 0 ;
+            }
+            document.getElementById(ButtonAll).getElementsByTagName("li")[dindex].className = "active";
+        }
+        //向左边按钮结束
+        //点击按钮合集
+        for(var i=0;i<length;i++)
+        {
+            document.getElementById(ButtonAll).getElementsByTagName("li")[i].index = i ;
+         document.getElementById(ButtonAll).getElementsByTagName("li")[i].onclick = function(){
+             clearInterval(timer);
+             clearClass();
+             pindex = this.index;
+             dindex = this.index;
+             move(document.getElementById(ImgAll),"left",300,-dindex*width);
+             document.getElementById(ButtonAll).getElementsByTagName("li")[dindex].className = "active";
+         }
+        }
+        //点击按钮结束
+        var timer = setInterval(function(){
+            autoplay();
+        },3000)
+        //图片轮播结束
+        document.getElementById(BoxId).onmouseover = function(){
+            clearInterval(timer);
+        }
+        document.getElementById(BoxId).onmouseleave= function(){
+           timer = setInterval(function(){
+               autoplay();
+           },3000)
+        }
+    }
+</script>
+</html>
